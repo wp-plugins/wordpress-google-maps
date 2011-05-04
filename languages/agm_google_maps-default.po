@@ -1,0 +1,131 @@
+msgid "Title:"
+msgstr "Title:"
+
+msgid "Map size:"
+msgstr "Map size:"
+
+msgid "Current posts"
+msgstr "Current posts"
+
+msgid "All posts"
+msgstr "All posts"
+
+msgid "Random map"
+msgstr "Random map"
+
+msgid "Use this map:"
+msgstr "Use this map:"
+
+msgid "Select one"
+msgstr "Select one"
+
+msgid "Custom query"
+msgstr "Custom query"
+
+msgid "Learn more about custom queries"
+msgstr "Learn more about custom queries"
+
+msgid "Show:"
+msgstr "Show:"
+
+msgid "Loading maps... please wait"
+msgstr "Loading maps... please wait"
+
+msgid "Preview/Edit"
+msgstr "Preview/Edit"
+
+msgid "Delete"
+msgstr "Delete"
+
+msgid "Add Map"
+msgstr "Add Map"
+
+msgid "Existing map"
+msgstr "Existing map"
+
+msgid "No existing maps"
+msgstr "No existing maps"
+
+msgid "Create new map"
+msgstr "Create new map"
+
+msgid "Create a new map which can be inserted into this post or page. Once you are done you can manage all maps below"
+msgstr "Create a new map which can be inserted into this post or page. Once you are done you can manage all maps below"
+
+msgid "There was an error geocoding your location. Check the address and try again"
+msgstr "There was an error geocoding your location. Check the address and try again"
+
+msgid "Please, type in the location"
+msgstr "Please, type in the location"
+
+msgid "Add"
+msgstr "Add"
+
+msgid "Save changes to this map"
+msgstr "Save changes to this map"
+
+msgid "Insert this map"
+msgstr "Insert this map"
+
+msgid "Map not saved"
+msgstr "Map not saved"
+
+msgid "Please, give this map a name"
+msgstr "Please, give this map a name"
+
+msgid "Please, save the map first"
+msgstr "Please, save the map first"
+
+msgid "Go back"
+msgstr "Go back"
+
+msgid "Give this map a name:"
+msgstr "Give this map a name:"
+
+msgid "Map options"
+msgstr "Map options"
+
+msgid "Drop Marker"
+msgstr "Drop Marker"
+
+msgid "Associate map with this post"
+msgstr "Associate map with this post"
+
+msgid "This post is already associated with these"
+msgstr "This post is already associated with these"
+
+msgid "Associating a map with a post allows for using this map in advanced ways - to show it dynamically in the sidebar widget, or in an advanced mashup"
+msgstr "Associating a map with a post allows for using this map in advanced ways - to show it dynamically in the sidebar widget, or in an advanced mashup"
+
+msgid "Map size"
+msgstr "Map size"
+
+msgid "Use default size"
+msgstr "Use default size"
+
+msgid "Map Appearance"
+msgstr "Map Appearance"
+
+msgid "Show map"
+msgstr "Show map"
+
+msgid "Show marker list"
+msgstr "Show marker list"
+
+msgid "Images strip settings"
+msgstr "Images strip settings"
+
+msgid "Show images strip"
+msgstr "Show images strip"
+
+msgid "Use image size"
+msgstr "Use image size"
+
+msgid "Show this many images"
+msgstr "Show this many images"
+
+msgid "Add a location"
+msgstr "Add a location" 
+
+msgid "You can display as many as you want"
+msgstr "You can display as many as you want" 
