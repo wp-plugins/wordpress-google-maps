@@ -3,7 +3,7 @@ Contributors: WPMUDEV
 Tags: google, maps, multisite, buddypress, wpmu
 Requires at least: 3.1
 Tested up to: 3.1.2
-Stable tag: 1.0.3
+Stable tag: trunk
 
 Easily embed and customize Google maps on your WordPress site - in posts, pages or as an easy to use widget. Display local images and let your site visitors get directions in seconds.
 
