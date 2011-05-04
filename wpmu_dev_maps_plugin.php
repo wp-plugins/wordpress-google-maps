@@ -6,7 +6,7 @@ Description: Easily embed, customize, and use Google maps on your WordPress site
 Version: 1.0.4
 Author: Ve Bailovity (Incsub)
 Author URI: http://premium.wpmudev.org
-WDP ID: 216
+WDP ID: 221
 
 Copyright 2009-2011 Incsub (http://incsub.com)
 
