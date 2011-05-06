@@ -1,11 +1,11 @@
 === WPMU DEV Maps Lite - Google Maps for Wordpress ===
 Contributors: WPMUDEV
-Tags: google, maps, multisite, buddypress, wpmu
+Tags: api, buddypress, google, google maps, gps, lat, latitude, lon, longitude, map, mapper, mapping, maps, marker, mash, mashup, poi, simple, simplemap, v3, WPMU DEV, multisite mapping
 Requires at least: 3.1
 Tested up to: 3.1.2
 Stable tag: 1.0.4
 
-Easily embed and customize Google maps on your WordPress site - in posts, pages or as an easy to use widget. Display local images and let your site visitors get directions in seconds.
+Easily embed and customize Google maps on your WordPress site - in posts, pages or as an easy to use widget.
 
 == Description ==
 
@@ -19,12 +19,22 @@ This plugin does it all, providing a solution for the everyday blogger, the ma a
 * Full Mapping Widget - there's no place this map can't go!
 * Advanced Settings Page - for those users that want fine-tune control
 
-Here are some of the features you'll get in the premium version available on WPMU DEV:
+Here are some of the features you'll get in the premium version available on <a href='http://premium.wpmudev.org/project/wordpress-google-maps-plugin/'>WPMU DEV</a>:
 
 * Unlimited number of maps
 * Plugin options for maps default values
 * Advanced options for Maps 
 * No links in generated maps, ever
+
+<a href='http://premium.wpmudev.org/project/wordpress-google-maps-plugin/'>**Upgrade to the full version now &raquo;**</a>
+
+Display local images and let your site visitors get directions in seconds!  Get directions by car, walking, or public transportation. This mapping plugin is fully interactive!
+
+Easily display multiple maps in a single post or page with our advanced controls including shorcodes with IDs as well as control the width and height!  Add multiple markers to any map!
+
+This plugin has a host of features.  Don't see something you like?  WPMU DEV Members have the ability to ask for feature requests in the <a href='http://premium.wpmudev.org/forums/forum/feature-suggestions/'>forums!</a>  
+
+<a href='http://premium.wpmudev.org/project/wordpress-google-maps-plugin/'>**Sign up and submit your request today!**</a>
 
 == Installation ==
 = To Install: =
@@ -58,6 +68,8 @@ What else could I get in the premium version?
 * Plugin options for maps default values
 * Advanced options for Maps 
 * No links in generated maps, ever
+
+<a href='http://premium.wpmudev.org/project/wordpress-google-maps-plugin/'>**Upgrade to the full version now &raquo;**</a>
 
 = How do I get support? =
 We provide comprehensive and guaranteed support on the <a href='http://premium.wpmudev.org/forums/tags/google-maps-plugin'>WPMU DEV forums</a> and <a href='http://premium.wpmudev.org/live-support/'>live chat</a> only.
