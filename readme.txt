@@ -1,4 +1,4 @@
-=== WPMU DEV Maps Lite - Google Maps for Wordpress ===
+=== WPMU DEV Maps - Google Maps for Wordpress ===
 Contributors: WPMUDEV
 Tags: api, buddypress, google, google maps, gps, lat, latitude, lon, longitude, map, mapper, mapping, maps, marker, mash, mashup, poi, simple, simplemap, v3, WPMU DEV, multisite mapping
 Requires at least: 3.1
