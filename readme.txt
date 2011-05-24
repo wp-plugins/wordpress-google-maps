@@ -9,9 +9,9 @@ Easily embed and customize Google maps on your WordPress site - in posts, pages 
 
 == Description ==
 
-Google Maps is the internet standard for mapping and direction.  And why not?  Their latest APIs make for the easiest, most streamlined experience available.  This plugin does all the work for you.  No creating an account.  No copying of links from google's site.  No need to go to google maps at all.
+Google Maps is the internet standard for mapping and direction.  And why not?  Their latest APIs make for the easiest, most streamlined experience available.  This plugin does all the work for you.  No creating an account.  No copying of links from Google's site.  No need to go to Google maps at all.
 
-This plugin does it all, providing a solution for the everyday blogger, the ma and pa business owner, and even the most particular of power users!  And it's ready to be used in any environment - WordPress, BuddyPress, and Multisite - it's never been easier than it is now!
+This plugin does it all, providing a solution for the everyday blogger, the ma and pa business owner, and even the most particular of power users!  And it's ready to be used in any environment - WordPress, BuddyPress, and Multisite. It's never been easier than it is now!
 
 = Some WPMU DEV Maps Lite Features: =
 
@@ -19,7 +19,7 @@ This plugin does it all, providing a solution for the everyday blogger, the ma a
 * Full Mapping Widget - there's no place this map can't go!
 * Advanced Settings Page - for those users that want fine-tune control
 
-Here are some of the features you'll get in the premium version available on <a href='http://premium.wpmudev.org/project/wordpress-google-maps-plugin/'>WPMU DEV</a>:
+Here are some of the features you'll get in the premium version available at <a href='http://premium.wpmudev.org/project/wordpress-google-maps-plugin/'>WPMU DEV</a>:
 
 * Unlimited number of maps
 * Plugin options for maps default values
@@ -60,7 +60,7 @@ This plugin has a host of features.  Don't see something you like?  WPMU DEV Mem
 == Frequently Asked Questions ==
 
 = Do I need to be a paid WPMU DEV member? =
-No.  This plugins is offered as is at no charge.  A full-featured, premium version is available for purchase on WPMU DEV.
+No.  This plugins is offered as is at no charge.  A fully-featured, premium version is available for purchase on WPMU DEV.
 
 What else could I get in the premium version?
 
@@ -73,4 +73,3 @@ What else could I get in the premium version?
 
 = How do I get support? =
 We provide comprehensive and guaranteed support on the <a href='http://premium.wpmudev.org/forums/tags/google-maps-plugin'>WPMU DEV forums</a> and <a href='http://premium.wpmudev.org/live-support/'>live chat</a> only.
- 
