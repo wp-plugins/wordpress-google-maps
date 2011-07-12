@@ -22,7 +22,9 @@ AgmMapHandler = function (selector, data) {
 	var travelType;
 	var mapId = 'map_' + Math.floor(Math.random()* new Date().getTime()) + '_preview';
 	var $container = $(selector);
+	var $alignmentContainer;
 	var _markers = [];
+	var _panoramioLayer = false;
 	
 	var closeDirections = function () {
 		$(selector + ' .agm_mh_directions_container').remove();
@@ -58,6 +60,15 @@ AgmMapHandler = function (selector, data) {
 		;
 		html += '</div>';
 		$container.append(html);
+	};
+	
+	var togglePanoramioLayer = function () {
+		if (data.show_panoramio_overlay && parseInt(data.show_panoramio_overlay)) {
+			var tag = data.panoramio_overlay_tag;
+			_panoramioLayer = new google.maps.panoramio.PanoramioLayer();
+			if (tag) _panoramioLayer.setTag(tag);
+			_panoramioLayer.setMap(map);
+		} 
 	};
 	
 	var switchTravelType = function () {
@@ -135,6 +146,7 @@ AgmMapHandler = function (selector, data) {
     		'<img class="agm_mh_info_icon" src="' + _agm_root_url + '/img/' + icon + '" />' +
     		'<div class="agm_mh_info_body">' + body + '</div>' +
     		createDirectionsLink(idx) +
+    		createLinksToPostsMarkup(idx,1) +
     	'</div>';
 		var info = new google.maps.InfoWindow({
 		    content: infoContent 
@@ -143,6 +155,7 @@ AgmMapHandler = function (selector, data) {
 			info.open(map, marker);
 		});
 		marker._agmBody = body;
+		marker._agmInfo = info;
 		_markers[idx] = marker;
 		updateMarkersListDisplay();
 	};
@@ -164,11 +177,23 @@ AgmMapHandler = function (selector, data) {
 		var id = extractMarkerId($me.attr('href'));
 		var m = _markers[id];
 		map.setCenter(m.getPosition());
+		
+		if (parseInt(data.street_view)) {
+			var panorama = map.getStreetView();
+			panorama.setPosition(map.getCenter());
+			panorama.setVisible(true);
+		}
+		
 		return false;
 	};
 	
 	var createDirectionsLink = function (idx) {
 		return '<a href="#agm_mh_marker-' + idx + '" class="agm_mh_marker_item_directions">' + l10nStrings.directions + '</a>';
+	};
+	
+	var createLinksToPostsMarkup = function (idx,i) {
+		if (!"show_posts" in data || !data.show_posts || !parseInt(data.show_posts)) return '';
+		return '<div class="agm_post_links_container"><input type="hidden" value="' + idx + '" /></div>';
 	};
 	
 	var updateMarkersListDisplay = function () {
@@ -184,11 +209,61 @@ AgmMapHandler = function (selector, data) {
 					'</div>' +
 				'</a>' +
 				createDirectionsLink(idx) +
+				createLinksToPostsMarkup(idx) +
 				'<div style="clear:both"></div>' +
 			'</li>';
 		});
 		html += '</ul>';
 		$('#agm_mh_markers_' + mapId).html(html);
+	};
+	
+	var populateLinksToPostsMarkup = function () {
+		if (!"show_posts" in data || !data.show_posts || !parseInt(data.show_posts)) return false;
+		$(selector + ' .agm_post_links_container').each(function () {
+			var $me = $(this);
+			var mid = $me.find('input:hidden').val();
+			if (!mid) return true;
+			var marker = data.markers[mid];
+			if (!marker) return true;
+			var post_ids = false;
+			if (!"post_ids" in marker || !marker.post_ids || !marker.post_ids.length) post_ids = data.post_ids;
+			else post_ids = marker.post_ids;
+			if (!post_ids) return true;
+			$.post(_agm_ajax_url, {"action": "agm_get_post_titles", "post_ids": post_ids}, function (data) {
+				if (!data.posts) return true;
+				var html = '<div class="agm_associated_posts_list_title">' + l10nStrings.posts + '</div>'; 
+				html += '<ul class="agm_associated_posts_list_items">';
+				var style = '';
+				$.each(data.posts, function (idx, post) {
+					if (idx > 2) style = 'style="display:none;"';
+					html += '<li ' + style + '><a href="' + post.permalink + '">' + post.post_title + '</a></li>';
+				});
+				html += '</ul>';
+				if (style) {
+					html += '<a href="#" class="agm_toggle_hidden_post_links">' + l10nStrings.showAll + '</a>';
+				}
+				// Update marker in the list
+				$me.html(html);
+				// Update Info Popup
+				var mapMarker = _markers[mid];
+				var $old = $(mapMarker._agmInfo.getContent());
+				$old.find('.agm_post_links_container').html(html);
+				var markup = '<div class="agm_mh_info_content">' + $old.html() + '</div>';
+				mapMarker._agmInfo.setContent(markup);
+				
+				$('.agm_toggle_hidden_post_links').live('click', function () {
+					var $me = $(this).parents('.agm_post_links_container').first();
+					if ($me.find('.agm_associated_posts_list_items li:hidden').length) {
+						$me.find('.agm_associated_posts_list_items li:hidden').show();
+						$(this).text(l10nStrings.hide);
+					} else {
+						$me.find('.agm_associated_posts_list_items li:gt(2)').hide();
+						$(this).text(l10nStrings.showAll);
+					}
+					return false;
+				});
+			});
+		});
 	};
 	
 	var init = function () {
@@ -199,17 +274,31 @@ AgmMapHandler = function (selector, data) {
 			var width = (parseInt(data.width) > 0) ? data.width : 200;
 			var height = (parseInt(data.height) > 0) ? data.height : 200;
 		}
-		data.zoom = (data.zoom) ? data.zoom : 4;
+		width = (width.toString().indexOf('%')) ? width : parseInt(width); // Support percentages
+
+		data.zoom = parseInt(data.zoom) ? parseInt(data.zoom) : 1;
 		data.map_type = (data.map_type) ? data.map_type : 'ROADMAP';
+		data.map_alignment = data.map_alignment || data.defaults.map_alignment;
 		data.image_size = data.image_size || data.defaults.image_size;
 		data.image_limit = data.image_limit || data.defaults.image_limit;
+		
+		data.show_panoramio_overlay = ("show_panoramio_overlay" in data) ? data.show_panoramio_overlay : 0; 
+		data.panoramio_overlay_tag = ("panoramio_overlay_tag" in data) ? data.panoramio_overlay_tag : ''; 
+		
+		data.street_view = ("street_view" in data) ? data.street_view : 0;
+		
+		$container.wrap('<div id="map_' + mapId + '_alignment_container"></div>');
+		$alignmentContainer =  $('#map_' + mapId + '_alignment_container');
+		
 		$container.html('<div id="' + mapId + '"></div>');
 		$('#' + mapId)
-			.width(parseInt(width))
+			//.width(parseInt(width))
+			.width(width)
 			.height(parseInt(height))
 		;
 		$container
-			.width(parseInt(width))
+			//.width(parseInt(width))
+			.width(width)
 		;
 		if (!data.show_map || !parseInt(data.show_map)) $('#' + mapId).css({
 			"position": "absolute",
@@ -236,11 +325,42 @@ AgmMapHandler = function (selector, data) {
 			$container.append('<div class="agm_upgrade_link"><small><a href="http://premium.wpmudev.org/project/wordpress-google-maps-plugin">Created by the WordPress Google Maps plugin</a></small></div>');
 		}
 		addMarkers();
+		togglePanoramioLayer();
+		populateLinksToPostsMarkup();
+		
+		if (parseInt(data.street_view)) {
+			var panorama = map.getStreetView();
+			var pos = data.street_view_pos ? new google.maps.LatLng(data.street_view_pos[0], data.street_view_pos[1]) : map.getCenter();
+			panorama.setPosition(pos);
+			if (data.street_view_pov) {
+				panorama.setPov({
+					"heading": parseInt(data.street_view_pov.heading),
+					"pitch": parseInt(data.street_view_pov.pitch),
+					"zoom": parseInt(data.street_view_pov.zoom)
+				});
+			}
+			panorama.setVisible(true);
+		}
 
 		if(data.show_images && parseInt(data.show_images)) {
 			panoramioImages = new AgmPanoramioHandler(map, $container, data.image_limit, data.image_size);
 			$container.append(panoramioImages.createMarkup());
 		}
+		
+		// Set alignment
+		switch(data.map_alignment) {
+			case "right":
+				$container.css({"float": "right"});
+				break;
+			case "center":
+				$container.css({"margin": "0 auto"});
+				break;
+			case "left":
+			default:
+				$container.css({"float": "left"});
+				break;
+		}
+		$alignmentContainer.append('<div style="clear:both"></div>');
 		
 		$(selector + ' .agm_mh_travel_type').live('click', switchTravelType);
 		$(selector + ' .agm_mh_swap_direction_waypoints').live('click', swapWaypoints);
@@ -284,6 +404,7 @@ var AgmPanoramioHandler = function (map, $container, limit, size) {
 	};
 	
 	var loadGalleriaScript = function () {
+		if (window.Galleria && typeof(window.Galleria) == 'function') return true;
 		var script = document.createElement("script");
 		var src = _agm_root_url + '/js/external/galleria/galleria-1.2.2.min.js';
 		script.type = "text/javascript";
@@ -292,23 +413,33 @@ var AgmPanoramioHandler = function (map, $container, limit, size) {
 	};
 	
 	var loadGalleriaTheme = function () {
-		var script = document.createElement("script");
-		var src = _agm_root_url + '/js/external/galleria/themes/classic/galleria.classic.min.js';
-		script.type = "text/javascript";
-		script.src = src;
-		document.body.appendChild(script);
-		var gheight = height ? height : 200;
-		$('#'+containerId + ' div.agm_panoramio_image_list_container').galleria({
-	        width: $container.width(),
-	        height: gheight
-	    });
+		if (!window.Galleria || typeof(window.Galleria) != 'function') setTimeout(loadGalleriaTheme, 300);
+		else {
+			if (Galleria && Galleria.theme) return true;
+			var script = document.createElement("script");
+			var src = _agm_root_url + '/js/external/galleria/themes/classic/galleria.classic.min.js';
+			script.type = "text/javascript";
+			script.src = src;
+			document.body.appendChild(script);
+			waitForGalleriaTheme();
+		}
 	};
 	
 	var waitForImages = function () {
 		if (!images.length) setTimeout(waitForImages, 1000);
 		else {
-			populateContainer();
 			loadGalleriaTheme();
+		}
+	};
+	var waitForGalleriaTheme = function () {
+		if (!window.Galleria || !window.Galleria.theme || typeof(window.Galleria) != 'function' || typeof($('#' + containerId + ' div.agm_panoramio_image_list_container').galleria) != 'function') setTimeout(waitForGalleriaTheme, 300);
+		else {
+			populateContainer();
+			var gheight = height ? height : 200;
+			$('#' + containerId + ' div.agm_panoramio_image_list_container').galleria({
+		        width: $container.width(),
+		        height: gheight
+		    });
 		}
 	};
 	

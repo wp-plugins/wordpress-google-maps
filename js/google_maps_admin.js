@@ -23,18 +23,29 @@ AgmMapHandler = function (selector, data, allowInsertion) {
 	var originalData;
 	var $container = $(selector);
 	var _markers = [];
+	var _panoramioLayer = false;
 	// Allow map insertion by default
 	allowInsertion = typeof(allowInsertion) != 'undefined' ? allowInsertion : true;
 	
 	var populateDefaults = function () {
 		originalData = data;
-		data.zoom = data.zoom || 4;
+		data.zoom = data.zoom || data.defaults.zoom;
+		data.zoom = parseInt(data.zoom) ? parseInt(data.zoom) : 1;
 		data.show_map = ("show_map" in data) ? data.show_map : 1; 
-		data.show_links = ("show_links" in data) ? data.show_links : 1; 
+		data.show_posts = ("show_posts" in data) ? data.show_posts : 0; 
 		data.show_markers = ("show_markers" in data) ? data.show_markers : 1; 
 		data.show_images = ("show_images" in data) ? data.show_images : 0; 
+		data.show_links = ("show_links" in data) ? data.show_links : 1; 
+
+		data.show_panoramio_overlay = ("show_panoramio_overlay" in data) ? parseInt(data.show_panoramio_overlay) : 0; 
+		data.panoramio_overlay_tag = ("panoramio_overlay_tag" in data) ? data.panoramio_overlay_tag : ''; 
+		
+		data.street_view = ("street_view" in data) ? data.street_view : 0;
+		data.street_view_pos = ("street_view_pos" in data) ? data.street_view_pos : 0;
+		data.street_view_pov = ("street_view_pov" in data) ? data.street_view_pov : 0;
 		
 		data.map_type = data.map_type || data.defaults.map_type;
+		data.map_alignment = data.map_alignment || data.defaults.map_alignment;
 		data.post_ids = data.post_ids || [];
 		
 		data.image_size = data.image_size || data.defaults.image_size;
@@ -43,7 +54,7 @@ AgmMapHandler = function (selector, data, allowInsertion) {
 	
 	var insertMap = function () {
 		var id = $('#agm_mh_map_id').val();
-		if (!id || $(this).attr('disabled')) {
+		if (!id || $(this).is(':disabled')) {
 			alert(l10nStrings.please_save_map);
 			return false;
 		}
@@ -57,8 +68,11 @@ AgmMapHandler = function (selector, data, allowInsertion) {
 			alert(l10nStrings.map_name_missing);
 			return false;
 		}
+		var streetView = map.getStreetView();
+		
 		var width = $('#agm_map_size_x').is(':enabled') ? $('#agm_map_size_x').val() : 0;
 		var height = $('#agm_map_size_y').is(':enabled') ? $('#agm_map_size_y').val() : 0;
+		var alignment = $('input.agm_map_alignment_element:checked').val();
 		var request = {
 			"action": "agm_save_map",
 			"id": $('#agm_mh_map_id').val(),
@@ -67,27 +81,37 @@ AgmMapHandler = function (selector, data, allowInsertion) {
 			"width": width,
 			"zoom": map.getZoom(),
 			"map_type": map.getMapTypeId(),
-			"show_map": $('#agm_map_show_map').attr('checked') ? 1 : 0,
-			"show_links": $('#agm_map_show_links').attr('checked') ? 1 : 0,
-			"show_markers": $('#agm_map_show_markers').attr('checked') ? 1 : 0,
-			"show_images": $('#agm_map_show_images').attr('checked') ? 1 : 0,
+			"show_map": $('#agm_map_show_map').is(':checked') ? 1 : 0,
+			"show_posts": $('#agm_map_show_posts').is(':checked') ? 1 : 0,
+			"map_alignment": alignment,
+			"show_markers": $('#agm_map_show_markers').is(':checked') ? 1 : 0,
+			"show_images": $('#agm_map_show_images').is(':checked') ? 1 : 0,
+			"show_links": $('#agm_map_show_links').is(':checked') ? 1 : 0,
 			"image_size": $('#agm_map_image_size').val(),
 			"image_limit": $('#agm_map_image_limit').val(),
+			"show_panoramio_overlay": $('#agm_map_show_panoramio_overlay').is(':checked') ? 1 : 0,
+			"panoramio_overlay_tag": $('#agm_map_panoramio_overlay_tag').val(),
+			"street_view": streetView.getVisible() ? 1 : 0,
+			"street_view_pos": streetView.getVisible() ? [streetView.getPosition().lat(), streetView.getPosition().lng()] : 0,
+			"street_view_pov": streetView.getVisible() ? streetView.getPov() : 0,
 			"post_ids": [],
 			"markers": []
 		};
+
 		$.each($('input.agm_mh_associated_id'), function (idx, el) {
 			request.post_ids[request.post_ids.length] = $(el).val();
 		});
-		if ($('#agm_map_size_associate').attr('checked')) {
+		if ($('#agm_map_size_associate').is(':checked')) {
 			request.post_ids[request.post_ids.length] = $('#post_ID').val();
 		}
 		$.each(_markers, function (idx, marker) {
+			var position = marker.getPosition();
+			if (!position) return true;
 			var data = {
 				"title": marker.getTitle(),
 				"body": marker._agmBody,
 				"icon": marker.getIcon(),
-				"position": [marker.getPosition().lat(), marker.getPosition().lng()]
+				"position": [position.lat(), position.lng()]
 			};
 			request.markers[request.markers.length] = data;
 		});
@@ -102,7 +126,11 @@ AgmMapHandler = function (selector, data, allowInsertion) {
 	};
 	
 	var loadAssociatedPosts = function () {
-		if (!data.post_ids.length) return false;
+		if (!data.post_ids.length) {
+			$('#agm_map_associated_posts').html('');
+			$('#agm_map_size_associate').attr('checked', false); // Not associated, default to false
+			return false;
+		}
 		$.post(ajaxurl, {"action": "agm_get_post_titles", "post_ids": data.post_ids}, function (data) {
 			if (!data.posts) return false;
 			var html = '<div class="agm_less_important">' +
@@ -141,8 +169,14 @@ AgmMapHandler = function (selector, data, allowInsertion) {
 					l10nStrings.map_title + ' <input type="text" size="32" id="agm_map_title" />' + 
 				'</div>' +
 				'<div class="agm_mh_container">' + 
-					'<input type="button" class="button-secondary action" id="agm_map_options" value="' + l10nStrings.options + '" />' +
-					'<input type="button" class="button-secondary action" id="agm_map_drop_marker" value="' + l10nStrings.drop_marker + '" />' +
+					'<div id="agm_map_options_controls_container">' +
+						'<input type="button" class="button-secondary action" id="agm_map_options" value="' + l10nStrings.options + '" />' +
+						'<div id="agm_map_options_help" class="agm_less_important">' + l10nStrings.options_help + '</div>' +
+					'</div>' +
+					'<div id="agm_map_drop_marker_controls_container">' +
+						'<input type="button" class="button-secondary action" id="agm_map_drop_marker" value="' + l10nStrings.drop_marker + '" />' +
+						'<div id="agm_map_zoom_in_help" class="agm_less_important">' + l10nStrings.zoom_in_help + '</div>' +
+					'</div>' +
 				'</div>' +
 			'</div>' + 
 			'<div id="agm_mh_options" style="display:none">' +
@@ -161,6 +195,7 @@ AgmMapHandler = function (selector, data, allowInsertion) {
 				'</fieldset>' +
 				'<fieldset><legend>' + l10nStrings.map_appearance + '</legend>' +
 					'<div><input type="checkbox" id="agm_map_show_links" /> <label for="agm_map_show_links">Show links</label></div>' +
+					'<div><input type="checkbox" disabled="disabled" id="agm_map_show_posts" /> <label for="agm_map_show_posts">' + l10nStrings.show_posts + '</label></div>' +
 					'<div><input type="checkbox" disabled="disabled" id="agm_map_show_map" /> <label for="agm_map_show_map">' + l10nStrings.show_map + '</label></div>' +
 					'<div><input type="checkbox" disabled="disabled" id="agm_map_show_markers" /> <label for="agm_map_show_markers">' + l10nStrings.show_markers + '</label></div>' +
 					'<div><fieldset>' +
@@ -174,6 +209,20 @@ AgmMapHandler = function (selector, data, allowInsertion) {
 						'<br />' +
 						'<label for="agm_map_image_limit">' + l10nStrings.image_limit + '</label> ' +
 						'<input type="text" disabled="disabled" size="2" id="agm_map_image_limit" value="' + data.image_limit + '" />' +
+					'</fieldset></div>' +
+					'<fieldset><legend>' + l10nStrings.panoramio_overlay + '</legend>' +
+						'<div><input type="checkbox" disabled="disabled" id="agm_map_show_panoramio_overlay" /> <label for="agm_map_show_panoramio_overlay">' + l10nStrings.show_panoramio_overlay + '</label></div>' +
+						'<div><label for="agm_map_panoramio_overlay_tag">' + l10nStrings.panoramio_overlay_tag + '</label> <input type="text" disabled="disabled" size="12" id="agm_map_panoramio_overlay_tag" /></div>' +
+						'<div><small>' + l10nStrings.panoramio_overlay_tag_help + '</small></div>' +
+					'</fieldset>' +
+					'<div><fieldset>' +
+						'<legend>' + l10nStrings.map_alignment + '</legend>' +
+						'<input type="radio" id="agm_map_alignment_left" name="ama" class="agm_map_alignment_element" value="left" />' +
+							'<label for="agm_map_alignment_left"><img src="' + _agm_root_url + '/img/system/left.png" />' + l10nStrings.map_alignment_left + '</label><br/>' +
+						'<input type="radio" id="agm_map_alignment_center" name="ama" class="agm_map_alignment_element" value="center" />' +
+							'<label for="agm_map_alignment_center"><img src="' + _agm_root_url + '/img/system/center.png" />' + l10nStrings.map_alignment_center + '</label><br/>' +
+						'<input type="radio" id="agm_map_alignment_right" name="ama" class="agm_map_alignment_element" value="right" />' +
+							'<label for="agm_map_alignment_right"><img src="' + _agm_root_url + '/img/system/right.png" />' + l10nStrings.map_alignment_right + '</label><br/>' +
 					'</fieldset></div>' +
 				'</fieldset>' +
 				'<p class="agm_less_important">Global defaults are configured in Settings &gt; WPMU DEV Maps</p>' +
@@ -216,21 +265,53 @@ AgmMapHandler = function (selector, data, allowInsertion) {
 		if (!data.id) $('#agm_insert_map').attr('disabled', true);
 		$('#agm_map_title').val(data.title);
 		
-		var show_links = (data.show_links && parseInt(data.show_links));
-		var show_map = (data.show_map && parseInt(data.show_map));
-		var show_markers = (data.show_markers && parseInt(data.show_markers));
-		var show_images = (data.show_images && parseInt(data.show_images));
+		var show_map = (data.show_map && parseInt(data.show_map)) ? true : false;
+		var show_posts = (data.show_posts && parseInt(data.show_posts)) ? true : false;
+		var show_markers = (data.show_markers && parseInt(data.show_markers)) ? true : false;
+		var show_images = (data.show_images && parseInt(data.show_images)) ? true : false;
+		var show_panoramio_overlay = data.show_panoramio_overlay ? true : false;
+		
+		var show_links = (data.show_links && parseInt(data.show_links)) ? true : false;
 		$('#agm_map_show_links').attr('checked', show_links);
-		$('#agm_map_show_map').attr('checked', show_map);
+		
+		$('#agm_map_show_map').attr('checked', show_map);   
+		$('#agm_map_show_posts').attr('checked', show_posts);   
 		$('#agm_map_show_markers').attr('checked', show_markers);
 		$('#agm_map_show_images')
 			.click(function () {
 				$('#agm_map_image_size').attr('disabled', !$(this).is(":checked"));
 				$('#agm_map_image_limit').attr('disabled', !$(this).is(":checked"));
 			})
-			.attr('checked', show_images);
+			.attr('checked', show_images); 
 		$('#agm_map_image_size').attr('disabled', !$('#agm_map_show_images').is(":checked"));
 		$('#agm_map_image_limit').attr('disabled', !$('#agm_map_show_images').is(":checked"));
+		
+	
+		// agm_map_show_panoramio_overlay
+		$('#agm_map_show_panoramio_overlay')
+			.click(togglePanoramioLayer)
+			.attr('checked', show_panoramio_overlay)
+		;
+		$('#agm_map_panoramio_overlay_tag')
+			.change(function () {
+				if (!_panoramioLayer) return true;
+				_panoramioLayer.setTag($(this).val());
+			})
+			.val(data.panoramio_overlay_tag)
+		;
+		
+		switch (data.map_alignment) {
+			case "right":
+				$('#agm_map_alignment_right').attr('checked', true);
+				break;
+			case "center":
+				$('#agm_map_alignment_center').attr('checked', true);
+				break;
+			case "left":
+			default:
+				$('#agm_map_alignment_left').attr('checked', true);
+				break;
+		}
 		
 		if (!data.width || !parseInt(data.width)) {
 			$('#agm_map_size_default').attr('checked', true);
@@ -239,6 +320,33 @@ AgmMapHandler = function (selector, data, allowInsertion) {
 		$.each(data.post_ids, function (idx, el) {
 			if ($('#post_ID').val() == el) $('#agm_map_size_associate').attr('checked', true);
 		});
+		// Toggle post association/disassociation
+		$('#agm_map_size_associate').click(function () {
+			var val = $('#agm_map_size_associate').val();
+			
+			if ($('#agm_map_size_associate').is(':checked')) {
+				if (data.post_ids) data.post_ids.push(val);
+				else data.post_ids = [val];
+			} else {
+				$('input.agm_mh_associated_id[value="' + val + '"]').remove();
+				if (data.post_ids) data.post_ids = $.grep(data.post_ids, function (el) { return el != val; });
+			}
+			
+			loadAssociatedPosts();
+			return true;
+		});
+	};
+	
+	var togglePanoramioLayer = function () {
+		if ($('#agm_map_show_panoramio_overlay').is(':checked')) {
+			var tag = $('#agm_map_panoramio_overlay_tag').val();
+			_panoramioLayer = new google.maps.panoramio.PanoramioLayer();
+			if (tag) _panoramioLayer.setTag(tag);
+			_panoramioLayer.setMap(map);
+		} else if (_panoramioLayer) {
+			_panoramioLayer.setMap(null);
+			_panoramioLayer = false;
+		}
 	};
 	
 	var toggleOptions = function () {
@@ -249,7 +357,7 @@ AgmMapHandler = function (selector, data, allowInsertion) {
 	};
 	
 	var toggleDefaultSize = function () {
-		if ($('#agm_map_size_default').attr('checked')) {
+		if ($('#agm_map_size_default').is(':checked')) {
 			$('#agm_map_size_x').val(data.defaults.width).attr('disabled', true);
 			$('#agm_map_size_y').val(data.defaults.height).attr('disabled', true);
 		} else {
@@ -338,6 +446,13 @@ AgmMapHandler = function (selector, data, allowInsertion) {
 		var id = extractMarkerId($me.attr('href'));
 		var m = _markers[id];
 		map.setCenter(m.getPosition());
+		
+		if (parseInt(data.street_view)) {
+			var panorama = map.getStreetView();
+			panorama.setPosition(map.getCenter());
+			panorama.setVisible(true);
+		}
+		
 		return false;
 	};
 	
@@ -425,7 +540,22 @@ AgmMapHandler = function (selector, data, allowInsertion) {
 		}
 		
 		addMarkers();
+		togglePanoramioLayer();
 		loadAssociatedPosts();
+
+		if (parseInt(data.street_view)) {
+			var panorama = map.getStreetView();
+			var pos = data.street_view_pos ? new google.maps.LatLng(data.street_view_pos[0], data.street_view_pos[1]) : map.getCenter();
+			panorama.setPosition(pos);
+			if (data.street_view_pov) {
+				panorama.setPov({
+					"heading": parseInt(data.street_view_pov.heading),
+					"pitch": parseInt(data.street_view_pov.pitch),
+					"zoom": parseInt(data.street_view_pov.zoom)
+				});
+			}
+			panorama.setVisible(true);
+		}
 		
 		$('#agm_map_drop_marker').click(dropNewMarker);
 		$('#agm_go_back').click(destroyMap);

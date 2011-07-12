@@ -6,6 +6,16 @@
 class AgmPluginInstaller {
 	var $wpdb;
 
+	var $defaults = array (
+		'height' => 300,
+		'width' => 300,
+		'map_type' => 'ROADMAP',
+		'image_size' => 'small',
+		'image_limit' => 10,
+		'map_alignment' => 'left',
+		'zoom' => 1,
+	);
+
 	/**
 	 * PHP4 compatibility constructor.
 	 */
@@ -27,7 +37,7 @@ class AgmPluginInstaller {
 	 * @access public
 	 * @static
 	 */
-	static function install () {
+	function install () {
 		$me = new AgmPluginInstaller();
 		if (!$me->has_database_table()) {
 			$me->create_database_table();
@@ -35,10 +45,18 @@ class AgmPluginInstaller {
 		}
 	}
 
-	static function check () {
+	/**
+	 * Performs a quick check for plugin install state.
+	 * Also updates plugin options as needed. This handles minor updates
+	 * (i.e. no database changes).
+	 *
+	 * @access public
+	 * @static
+	 */
+	function check () {
 		$is_installed = get_option('agm_google_maps', false);
-		if ($is_installed) return true;
-		else self::install();
+		if ($is_installed) return AgmPluginInstaller::check_and_update_options($is_installed);
+		else AgmPluginInstaller::install();
 	}
 
 	/**
@@ -77,13 +95,19 @@ class AgmPluginInstaller {
 	 * @access private
 	 */
 	function set_default_options () {
-		$options = array (
-			'height' => 300,
-			'width' => 300,
-			'map_type' => 'ROADMAP',
-			'image_size' => 'small',
-			'image_limit' => 10,
-		);
-		update_option('agm_google_maps', $options);
+		update_option('agm_google_maps', $this->defaults);
 	}
+
+	/**
+	 * Checks for new plugin options and adds them as needed.
+	 *
+	 * @access private
+	 * @static
+	 */
+	function check_and_update_options ($opts) {
+		$me = new AgmPluginInstaller;
+		$res = array_merge($me->defaults, $opts);
+		update_option('agm_google_maps', $res);
+	}
+
 }

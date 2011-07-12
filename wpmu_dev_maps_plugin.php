@@ -3,7 +3,7 @@
 Plugin Name: WPMU DEV Maps Lite
 Plugin URI: http://premium.wpmudev.org/project/wordpress-google-maps-plugin
 Description: Easily embed, customize, and use Google maps on your WordPress site - in posts, pages or as an easy to use widget, display local images and let your site visitors get directions in seconds.
-Version: 1.0.4
+Version: 2.0.1
 Author: Ve Bailovity (Incsub)
 Author URI: http://premium.wpmudev.org
 WDP ID: 221
@@ -48,6 +48,9 @@ if (is_multisite() && defined('WPMU_PLUGIN_URL') && defined('WPMU_PLUGIN_DIR') &
 	wp_die(__('There was an issue determining where Google Maps plugin is installed. Please reinstall.'));
 }
 $textdomain_handler('agm_google_maps', false, AGM_PLUGIN_SELF_DIRNAME . '/languages/');
+
+// Post Indexer (http://premium.wpmudev.org/project/post-indexer) integration
+define ('AGM_USE_POST_INDEXER', function_exists('post_indexer_make_current'), true);
 
 require_once AGM_PLUGIN_BASE_DIR . '/lib/class_agm_map_model.php';
 require_once AGM_PLUGIN_BASE_DIR . '/lib/class_agm_maps_widget.php';

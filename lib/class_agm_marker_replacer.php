@@ -41,8 +41,11 @@ class AgmMarkerReplacer {
 	 *
 	 * @access private
 	 */
-	function create_tag ($map) {
+	function create_tag ($map, $overrides=array()) {
 		if (!$map['id']) return '';
+
+		$map = array_merge($map, $overrides);
+
 		$elid = 'map-' . md5(microtime() . rand());
 		$rpl = '<div id="' . $elid . '"></div>';
 		$rpl .= '<script type="text/javascript">_agmMaps[_agmMaps.length] = {selector: "#' . $elid . '", data: ' . json_encode($map) . '};</script>';
@@ -54,13 +57,25 @@ class AgmMarkerReplacer {
 	 *
 	 * @access private
 	 */
-	function create_tags ($maps) {
+	function create_tags ($maps, $overrides=array()) {
 		if (!is_array($maps)) return '';
 		$ret = '';
 		foreach ($maps as $map) {
-			$ret .= $this->create_tag($map);
+			$ret .= $this->create_tag($map, $overrides);
 		}
 		return $ret;
+	}
+
+	/**
+	 * Creates a map overlay.
+	 * Takes all resulting maps from a query and merges all
+	 * markers into one map with default settings.
+	 *
+	 * @access private
+	 */
+	function create_overlay_tag ($maps, $overrides=array()) {
+		if (!is_array($maps)) return '';
+		return $this->create_tag($this->model->merge_markers($maps), $overrides);
 	}
 
 	/**
@@ -68,8 +83,8 @@ class AgmMarkerReplacer {
 	 *
 	 * @access private
 	 */
-	function process_map_id_tag ($map_id) {
-		return $this->create_tag($this->model->get_map($map_id));
+	function process_map_id_tag ($map_id, $overrides=array()) {
+		return $this->create_tag($this->model->get_map($map_id), $overrides);
 	}
 
 	/**
@@ -77,9 +92,15 @@ class AgmMarkerReplacer {
 	 *
 	 * @access private
 	 */
-	function process_map_query_tag ($query) {
-		if ('random' == $query) return $this->create_tags($this->model->get_random_map());
-		return $this->create_tags($this->model->get_custom_maps($query));
+	function process_map_query_tag ($query, $overrides=array(), $overlay=false, $network=false) {
+		$method = $overlay ? 'create_overlay_tag' : 'create_tags';
+		if ('random' == $query) return $this->$method($this->model->get_random_map(), $overrides);
+		if ('all' == $query) return $this->$method($this->model->get_all_maps(), $overrides);
+		return $network ?
+			$this->$method($this->model->get_custom_network_maps($query), $overrides)
+			:
+			$this->$method($this->model->get_custom_maps($query), $overrides)
+		;
 	}
 
 	/**
@@ -92,9 +113,28 @@ class AgmMarkerReplacer {
 		$atts = shortcode_atts(array(
 			'id' => false,
 			'query' => false,
+			'overlay' => false,
+			'network' => false,
+		// Appearance overrides
+			'height' => false,
+			'width' => false,
+			'show_map' => false,
+			'show_markers' => false,
+			'show_images' => false,
+			'show_posts' => false,
 		), $atts);
-		if ($atts['id']) $body = $this->process_map_id_tag($atts['id']);
-		else if ($atts['query']) $body = $this->process_map_query_tag($atts['query']);
+
+		$overrides = array();
+		if ($atts['height']) $overrides['height'] = $atts['height'];
+		if ($atts['width']) $overrides['width'] = $atts['width'];
+		if ($atts['show_map']) $overrides['show_map'] = ('true' == $atts['show_map']) ? 1 : 0;
+		if ($atts['show_markers']) $overrides['show_markers'] = ('true' == $atts['show_markers']) ? 1 : 0;
+		if ($atts['show_images']) $overrides['show_images'] = ('true' == $atts['show_images']) ? 1 : 0;
+		if ($atts['show_posts']) $overrides['show_posts'] = ('true' == $atts['show_posts']) ? 1 : 0;
+
+		if (!AGM_USE_POST_INDEXER) $atts['network'] = false; // Can't do this without Post Indexer
+		if ($atts['id']) $body = $this->process_map_id_tag($atts['id'], $overrides); // Single map, no overlay
+		else if ($atts['query']) $body = $this->process_map_query_tag($atts['query'], $overrides, $atts['overlay'], $atts['network']);
 		return $body ? $body : $content;
 	}
 }

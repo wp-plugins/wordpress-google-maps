@@ -1,131 +1,416 @@
-msgid "Title:"
-msgstr "Title:"
+msgid ""
+msgstr ""
+"Project-Id-Version: WPMU DEV Maps\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-07-07 06:54+0100\n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: Incsub\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: English\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-KeywordsList: _e;__\n"
+"X-Poedit-Basepath: D:\\xampp\\htdocs\\wdgm\\wp-content\\plugins\\wpmu_dev_maps_plugin\n"
+"X-Poedit-SearchPath-0: lib\n"
+"X-Poedit-SearchPath-1: lib\\forms\n"
 
-msgid "Map size:"
-msgstr "Map size:"
+#: lib/class_agm_admin_form_renderer.php:59
+msgid "<p>Please note, these titles are only approximations, but generally fit the description.</p>"
+msgstr ""
 
-msgid "Current posts"
-msgstr "Current posts"
+#: lib/class_agm_admin_form_renderer.php:84
+#: lib/class_agm_admin_maps.php:137
+msgid "Left"
+msgstr ""
 
-msgid "All posts"
-msgstr "All posts"
+#: lib/class_agm_admin_form_renderer.php:88
+#: lib/class_agm_admin_maps.php:138
+msgid "Center"
+msgstr ""
 
-msgid "Random map"
-msgstr "Random map"
+#: lib/class_agm_admin_form_renderer.php:92
+#: lib/class_agm_admin_maps.php:139
+msgid "Right"
+msgstr ""
 
-msgid "Use this map:"
-msgstr "Use this map:"
+#: lib/class_agm_admin_form_renderer.php:100
+msgid "<p>You can use this box to add some quick style changes, to better blend maps appearance with your themes.</p>"
+msgstr ""
 
-msgid "Select one"
-msgstr "Select one"
+#: lib/class_agm_admin_form_renderer.php:101
+msgid "<p>You may want to set styles for some of these selectors: <code>.agm_mh_info_title</code>, <code>.agm_mh_info_body</code>, <code>a.agm_mh_marker_item_directions</code>, <code>.agm_mh_marker_list</code>, <code>.agm_mh_marker_item</code>, <code>.agm_mh_marker_item_content</code></p>"
+msgstr ""
 
-msgid "Custom query"
-msgstr "Custom query"
+#: lib/class_agm_admin_form_renderer.php:105
+#: lib/class_agm_admin_form_renderer.php:114
+msgid "Yes"
+msgstr ""
 
-msgid "Learn more about custom queries"
-msgstr "Learn more about custom queries"
+#: lib/class_agm_admin_form_renderer.php:107
+#: lib/class_agm_admin_form_renderer.php:116
+msgid "No"
+msgstr ""
 
-msgid "Show:"
-msgstr "Show:"
+#: lib/class_agm_admin_form_renderer.php:125
+msgid "My posts have latitude/longitude fields"
+msgstr ""
 
+#: lib/class_agm_admin_form_renderer.php:126
+msgid "Latitude field name:"
+msgstr ""
+
+#: lib/class_agm_admin_form_renderer.php:128
+msgid "Logitude field name:"
+msgstr ""
+
+#: lib/class_agm_admin_form_renderer.php:130
+msgid "My posts have an address field"
+msgstr ""
+
+#: lib/class_agm_admin_form_renderer.php:131
+msgid "Address field name:"
+msgstr ""
+
+#: lib/class_agm_admin_form_renderer.php:136
+msgid "(A new map will be automatically created, using the defaults you specified above)"
+msgstr ""
+
+#: lib/class_agm_admin_form_renderer.php:137
+msgid "Associate the new map to post:"
+msgstr ""
+
+#: lib/class_agm_admin_form_renderer.php:138
+msgid "Automatically show the map:"
+msgstr ""
+
+#: lib/class_agm_admin_form_renderer.php:151
+#, php-format
+msgid "If previous option is set to \"Yes\", the new map will be shown %s the post body"
+msgstr ""
+
+#: lib/class_agm_admin_maps.php:49
+msgid "WPMU DEV Maps"
+msgstr ""
+
+#: lib/class_agm_admin_maps.php:77
 msgid "Loading maps... please wait"
-msgstr "Loading maps... please wait"
+msgstr ""
 
-msgid "Preview/Edit"
-msgstr "Preview/Edit"
-
-msgid "Delete"
-msgstr "Delete"
-
-msgid "Add Map"
-msgstr "Add Map"
-
-msgid "Existing map"
-msgstr "Existing map"
-
-msgid "No existing maps"
-msgstr "No existing maps"
-
-msgid "Create new map"
-msgstr "Create new map"
-
-msgid "Create a new map which can be inserted into this post or page. Once you are done you can manage all maps below"
-msgstr "Create a new map which can be inserted into this post or page. Once you are done you can manage all maps below"
-
-msgid "There was an error geocoding your location. Check the address and try again"
-msgstr "There was an error geocoding your location. Check the address and try again"
-
-msgid "Please, type in the location"
-msgstr "Please, type in the location"
-
-msgid "Add"
-msgstr "Add"
-
-msgid "Save changes to this map"
-msgstr "Save changes to this map"
-
+#: lib/class_agm_admin_maps.php:78
+#: lib/class_agm_admin_maps.php:120
 msgid "Insert this map"
-msgstr "Insert this map"
+msgstr ""
 
+#: lib/class_agm_admin_maps.php:79
+msgid "Preview/Edit"
+msgstr ""
+
+#: lib/class_agm_admin_maps.php:80
+#: lib/class_agm_admin_maps.php:118
+msgid "Delete"
+msgstr ""
+
+#: lib/class_agm_admin_maps.php:81
+#: lib/class_agm_admin_maps.php:100
+msgid "Add Map"
+msgstr ""
+
+#: lib/class_agm_admin_maps.php:82
+msgid "Existing map"
+msgstr ""
+
+#: lib/class_agm_admin_maps.php:83
+msgid "No existing maps"
+msgstr ""
+
+#: lib/class_agm_admin_maps.php:84
+#: lib/class_agm_admin_maps.php:101
+#: lib/forms/widget_settings.php:42
+#: lib\forms/widget_settings.php:42
+msgid "Create new map"
+msgstr ""
+
+#: lib/class_agm_admin_maps.php:85
+msgid "Advanced mode"
+msgstr ""
+
+#: lib/class_agm_admin_maps.php:86
+msgid "Activate Advanced mode to select individual maps to merge into one new map or to batch delete maps"
+msgstr ""
+
+#: lib/class_agm_admin_maps.php:87
+msgid "To create a new map from several maps select the maps you want to use and click Merge locations"
+msgstr ""
+
+#: lib/class_agm_admin_maps.php:88
+msgid "Exit advanced mode"
+msgstr ""
+
+#: lib/class_agm_admin_maps.php:89
+msgid "Merge locations"
+msgstr ""
+
+#: lib/class_agm_admin_maps.php:90
+msgid "Batch delete"
+msgstr ""
+
+#: lib/class_agm_admin_maps.php:91
+msgid "Create a new map which can be inserted into this post or page. Once you are done you can manage all maps below"
+msgstr ""
+
+#: lib/class_agm_admin_maps.php:113
+#: lib/class_agm_user_maps.php:32
+msgid "There was an error geocoding your location. Check the address and try again"
+msgstr ""
+
+#: lib/class_agm_admin_maps.php:114
+msgid "Please, type in the location"
+msgstr ""
+
+#: lib/class_agm_admin_maps.php:115
+msgid "Add"
+msgstr ""
+
+#: lib/class_agm_admin_maps.php:116
+msgid "Title"
+msgstr ""
+
+#: lib/class_agm_admin_maps.php:117
+msgid "Body"
+msgstr ""
+
+#: lib/class_agm_admin_maps.php:119
+msgid "Save changes to this map"
+msgstr ""
+
+#: lib/class_agm_admin_maps.php:121
 msgid "Map not saved"
-msgstr "Map not saved"
+msgstr ""
 
+#: lib/class_agm_admin_maps.php:122
 msgid "Please, give this map a name"
-msgstr "Please, give this map a name"
+msgstr ""
 
+#: lib/class_agm_admin_maps.php:123
 msgid "Please, save the map first"
-msgstr "Please, save the map first"
+msgstr ""
 
+#: lib/class_agm_admin_maps.php:124
 msgid "Go back"
-msgstr "Go back"
+msgstr ""
 
+#: lib/class_agm_admin_maps.php:125
 msgid "Give this map a name:"
-msgstr "Give this map a name:"
+msgstr ""
 
+#: lib/class_agm_admin_maps.php:126
 msgid "Map options"
-msgstr "Map options"
+msgstr ""
 
+#: lib/class_agm_admin_maps.php:127
+msgid "Use Map Options to change map size, appearance, alignment and image strip"
+msgstr ""
+
+#: lib/class_agm_admin_maps.php:128
 msgid "Drop Marker"
-msgstr "Drop Marker"
+msgstr ""
 
+#: lib/class_agm_admin_maps.php:129
+msgid "Zoom in on your place marker(s) so readers have best map view before Saving Changes to this map"
+msgstr ""
+
+#: lib/class_agm_admin_maps.php:130
 msgid "Associate map with this post"
-msgstr "Associate map with this post"
+msgstr ""
 
+#: lib/class_agm_admin_maps.php:131
 msgid "This post is already associated with these"
-msgstr "This post is already associated with these"
+msgstr ""
 
+#: lib/class_agm_admin_maps.php:132
 msgid "Associating a map with a post allows for using this map in advanced ways - to show it dynamically in the sidebar widget, or in an advanced mashup"
-msgstr "Associating a map with a post allows for using this map in advanced ways - to show it dynamically in the sidebar widget, or in an advanced mashup"
+msgstr ""
 
+#: lib/class_agm_admin_maps.php:133
 msgid "Map size"
-msgstr "Map size"
+msgstr ""
 
+#: lib/class_agm_admin_maps.php:134
 msgid "Use default size"
-msgstr "Use default size"
+msgstr ""
 
+#: lib/class_agm_admin_maps.php:135
 msgid "Map Appearance"
-msgstr "Map Appearance"
+msgstr ""
 
+#: lib/class_agm_admin_maps.php:136
+msgid "Map Alignment"
+msgstr ""
+
+#: lib/class_agm_admin_maps.php:140
+#: lib/forms/widget_settings.php:63
+#: lib\forms/widget_settings.php:63
 msgid "Show map"
-msgstr "Show map"
+msgstr ""
 
+#: lib/class_agm_admin_maps.php:141
+msgid "Show posts"
+msgstr ""
+
+#: lib/class_agm_admin_maps.php:142
+#: lib/forms/widget_settings.php:66
+#: lib\forms/widget_settings.php:66
 msgid "Show marker list"
-msgstr "Show marker list"
+msgstr ""
 
+#: lib/class_agm_admin_maps.php:143
 msgid "Images strip settings"
-msgstr "Images strip settings"
+msgstr ""
 
+#: lib/class_agm_admin_maps.php:144
+#: lib/forms/widget_settings.php:69
+#: lib\forms/widget_settings.php:69
 msgid "Show images strip"
-msgstr "Show images strip"
+msgstr ""
 
+#: lib/class_agm_admin_maps.php:145
 msgid "Use image size"
-msgstr "Use image size"
+msgstr ""
 
+#: lib/class_agm_admin_maps.php:146
+msgid "Panoramio overlay"
+msgstr ""
+
+#: lib/class_agm_admin_maps.php:147
+msgid "Show Panoramio overlay"
+msgstr ""
+
+#: lib/class_agm_admin_maps.php:148
+msgid "Restrict Panoramio overlay photos to this tag"
+msgstr ""
+
+#: lib/class_agm_admin_maps.php:149
+msgid "Leave this field empty for no tag restrictions"
+msgstr ""
+
+#: lib/class_agm_admin_maps.php:150
 msgid "Show this many images"
-msgstr "Show this many images"
+msgstr ""
 
-msgid "Add a location"
-msgstr "Add a location" 
+#: lib/class_agm_admin_maps.php:151
+msgid "Enter the location(s) you want to display:"
+msgstr ""
 
+#: lib/class_agm_admin_maps.php:152
 msgid "You can display as many as you want"
-msgstr "You can display as many as you want" 
+msgstr ""
+
+#: lib/class_agm_user_maps.php:30
+msgid "Close"
+msgstr ""
+
+#: lib/class_agm_user_maps.php:31
+msgid "Get Directions"
+msgstr ""
+
+#: lib/class_agm_user_maps.php:33
+msgid "Please, enter values for both point A and point B"
+msgstr ""
+
+#: lib/class_agm_user_maps.php:34
+msgid "Directions"
+msgstr ""
+
+#: lib/class_agm_user_maps.php:35
+msgid "Posts"
+msgstr ""
+
+#: lib/class_agm_user_maps.php:36
+msgid "Show All"
+msgstr ""
+
+#: lib/class_agm_user_maps.php:37
+msgid "Hide"
+msgstr ""
+
+#: lib/class_agm_user_maps.php:38
+msgid "Oops, we couldn't calculate the directions"
+msgstr ""
+
+#: lib/forms/widget_settings.php:2
+#: lib\forms/widget_settings.php:2
+msgid "Title:"
+msgstr ""
+
+#: lib/forms/widget_settings.php:7
+#: lib\forms/widget_settings.php:7
+msgid "Map size:"
+msgstr ""
+
+#: lib/forms/widget_settings.php:14
+#: lib\forms/widget_settings.php:14
+msgid "Use map(s) from:"
+msgstr ""
+
+#: lib/forms/widget_settings.php:18
+#: lib\forms/widget_settings.php:18
+msgid "Current posts"
+msgstr ""
+
+#: lib/forms/widget_settings.php:22
+#: lib\forms/widget_settings.php:22
+msgid "All posts"
+msgstr ""
+
+#: lib/forms/widget_settings.php:26
+#: lib\forms/widget_settings.php:26
+msgid "All"
+msgstr ""
+
+#: lib/forms/widget_settings.php:30
+#: lib\forms/widget_settings.php:30
+msgid "Random map"
+msgstr ""
+
+#: lib/forms/widget_settings.php:34
+#: lib\forms/widget_settings.php:34
+msgid "Use this map:"
+msgstr ""
+
+#: lib/forms/widget_settings.php:36
+#: lib\forms/widget_settings.php:36
+msgid "Select one"
+msgstr ""
+
+#: lib/forms/widget_settings.php:46
+#: lib\forms/widget_settings.php:46
+msgid "Custom query"
+msgstr ""
+
+#: lib/forms/widget_settings.php:50
+#: lib\forms/widget_settings.php:50
+msgid "This is a network query <small>(requires <a href=\"http://premium.wpmudev.org/project/post-indexer\">Post Indexer</a> plugin) - only \"tag=...\" supported</small>"
+msgstr ""
+
+#: lib/forms/widget_settings.php:53
+#: lib\forms/widget_settings.php:53
+msgid "Learn more about custom queries"
+msgstr ""
+
+#: lib/forms/widget_settings.php:57
+#: lib\forms/widget_settings.php:57
+msgid "Show:"
+msgstr ""
+
+#: lib/forms/widget_settings.php:60
+#: lib\forms/widget_settings.php:60
+msgid "Show as one map"
+msgstr ""
+
+#: lib/forms/widget_settings.php:72
+#: lib\forms/widget_settings.php:72
+msgid "Show posts in markers"
+msgstr ""
+

@@ -22,7 +22,7 @@ function agmInitialize () {
 function loadGoogleMaps () {
 	var script = document.createElement("script");
 	script.type = "text/javascript";
-	script.src = "http://maps.google.com/maps/api/js?v=3&sensor=false&callback=agmInitialize";
+	script.src = "http://maps.google.com/maps/api/js?v=3&libraries=panoramio&sensor=false&callback=agmInitialize";
 	document.body.appendChild(script);
 }
 

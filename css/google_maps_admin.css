@@ -1,7 +1,38 @@
 @CHARSET "UTF-8";
 
-#agm_map_options, #agm_go_back {
+li.existing_map_item {
+	margin-bottom: .6em;
+	background: none;
+}
+li.existing_map_item.agm_active_item {
+	background: #FFFFd0;
+}
+li.existing_map_item .map_item_title {
+	font-weight: bold;
+}
+li.existing_map_item .map_item_actions {
+	font-size: .9em;
+}
+
+li.existing_map_item .map_advanced_checkbox_container {
+	float: right;
+	text-align: right;
+}
+li.existing_map_item .map_advanced_checkbox_container input {
+	margin: 1em;
+}
+
+/*#agm_map_options,*/ #agm_go_back {
 	float:right; 
+}
+#agm_map_options_controls_container {
+	float: right; 
+	width: 40%;
+	text-align: right;
+}
+#agm_map_drop_marker_controls_container {
+	width: 40%;
+	text-align: left;
 }
 
 #agm_mh_markers li {

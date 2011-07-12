@@ -40,7 +40,7 @@ function createNewMap () {
 //Create the needed editor container HTML
 $('body').append(
 	'<div id="map_container" style="display:none">' + 
-	'<p class="agm_less_important">For more detailed instructions on how to use refer to <a target="_blank" href="http://premium.wpmudev.org/project/wordpress-google-maps-plugin/installation/">WPMU DEV Maps Installation and Use instructions</a>.</p>' +
+	(_agm_is_multisite ? '' : '<p class="agm_less_important">For more detailed instructions on how to use refer to <a target="_blank" href="http://premium.wpmudev.org/project/wordpress-google-maps-plugin/installation/">WPMU DEV Maps Installation and Use instructions</a>.</p>') +
 		'<div class="agm_container" id="maps_new">' +
 			'<h3>' + l10nEditor.new_map + '</h3>' +
 		'</div>' +

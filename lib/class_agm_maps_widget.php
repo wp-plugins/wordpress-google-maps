@@ -15,18 +15,24 @@ class AgmMapsWidget extends WP_Widget {
 		$width = esc_attr($instance['width']);
 		$query = esc_attr($instance['query']);
 		$query_custom = esc_attr($instance['query_custom']);
+		$network = esc_attr($instance['network']);
 		$map_id = esc_attr($instance['map_id']);
+		$show_as_one = esc_attr($instance['show_as_one']);
 		$show_map = esc_attr($instance['show_map']);
 		$show_markers = esc_attr($instance['show_markers']);
 		$show_images = esc_attr($instance['show_images']);
+		$show_posts = esc_attr($instance['show_posts']);
 
 		// Set defaults
 		$height = $height ? $height : 200;
 		$width = $width ? $width : 200;
 		$query_custom = ('custom' == $query) ? $query_custom : '';
+		$network = ('custom' == $query) ? $network : '';
+		$show_as_one = (isset($instance['show_as_one'])) ? $show_as_one : 1;
 		$show_map = (isset($instance['show_map'])) ? $show_map : 1;
 		$show_markers = (isset($instance['show_markers'])) ? $show_markers : 1;
 		$show_images = $show_images ? $show_images : 0;
+		$show_posts = $show_posts ? $show_posts : 1;
 
 		// Load map titles/ids
 		$maps = $this->model->get_maps();
@@ -41,10 +47,13 @@ class AgmMapsWidget extends WP_Widget {
 		$instance['width'] = strip_tags($new_instance['width']);
 		$instance['query'] = strip_tags($new_instance['query']);
 		$instance['query_custom'] = strip_tags($new_instance['query_custom']);
+		$instance['network'] = strip_tags($new_instance['network']);
 		$instance['map_id'] = strip_tags($new_instance['map_id']);
+		$instance['show_as_one'] = (int)$new_instance['show_as_one'];
 		$instance['show_map'] = (int)$new_instance['show_map'];
 		$instance['show_markers'] = (int)$new_instance['show_markers'];
 		$instance['show_images'] = (int)$new_instance['show_images'];
+		$instance['show_posts'] = (int)$new_instance['show_posts'];
 		return $instance;
 	}
 
@@ -57,17 +66,21 @@ class AgmMapsWidget extends WP_Widget {
 		$width = $width ? $width : 200; // Apply default
 		$query = $instance['query'];
 		$query_custom = $instance['query_custom'];
+		$network = $instance['network'];
 		$map_id = $instance['map_id'];
+		$show_as_one = $instance['show_as_one'];
 		$show_map = $instance['show_map'];
 		$show_markers = $instance['show_markers'];
 		$show_images = $instance['show_images'];
+		$show_posts = $instance['show_posts'];
 
-		$maps = $this->get_maps($query, $query_custom, $map_id);
+		$maps = $this->get_maps($query, $query_custom, $map_id, $show_as_one, $network);
 
 		echo $before_widget;
 		if ($title) echo $before_title . $title . $after_title;
 		if (is_array($maps)) foreach ($maps as $map) {
 			$selector = 'agm_widget_map_' . md5(microtime() . rand());
+			$map['show_posts'] = (int)$show_posts;
 			$map['height'] = $height;
 			$map['width'] = $width;
 			$map['show_map'] = $show_map;
@@ -80,21 +93,33 @@ class AgmMapsWidget extends WP_Widget {
 		echo $after_widget;
 	}
 
-	function get_maps ($query, $custom, $map_id) {
+	function get_maps ($query, $custom, $map_id, $show_as_one, $network) {
+		$ret = false;
 		switch ($query) {
 			case 'current':
-				return $this->model->get_current_maps();
+				$ret = $this->model->get_current_maps();
+				break;
 			case 'all_posts':
-				return $this->model->get_all_posts_maps();
+				$ret = $this->model->get_all_posts_maps();
+				break;
+			case 'all':
+				$ret = $this->model->get_all_maps();
+				break;
 			case 'random':
-				return $this->model->get_random_map();
+				$ret = $this->model->get_random_map();
+				break;
 			case 'custom':
-				return $this->model->get_custom_maps($custom);
+				$ret = $network ? $this->model->get_custom_network_maps($custom) : $this->model->get_custom_maps($custom);
+				break;
 			case 'id':
-				return array($this->model->get_map($map_id));
+				$ret = array($this->model->get_map($map_id));
+				break;
 			default:
-				return false;
+				$ret = false;
+				break;
 		}
+		if ($ret && $show_as_one) return array($this->model->merge_markers($ret));
+		return $ret;
 	}
 
 }
