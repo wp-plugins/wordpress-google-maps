@@ -59,6 +59,21 @@ class AgmAdminFormRenderer {
 		_e('<p>Please note, these titles are only approximations, but generally fit the description.</p>', 'agm_google_maps');
 	}
 
+	function  create_map_units_box () {
+		$opt = get_option('agm_google_maps');
+		$items = array(
+			'METRIC' => __('Metric', 'agm_google_maps'),
+			'IMPERIAL' => __('Imperial', 'agm_google_maps'),
+		);
+		echo "<select id='zoom' name='agm_google_maps[units]'>";
+		foreach($items as $item=>$label) {
+			$selected = ($opt['units'] == $item) ? 'selected="selected"' : '';
+			echo "<option value='{$item}' {$selected}>{$label}</option>";
+		}
+		echo "</select>";
+		_e('<div>These units will be used to express distances for directions</div>', 'agm_google_maps');
+	}
+
 	function  create_image_size_box () {
 		$opt = get_option('agm_google_maps');
 		$items = array(

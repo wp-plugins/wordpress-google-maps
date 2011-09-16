@@ -120,6 +120,7 @@ AgmMapHandler = function (selector, data) {
 		var request = {
 			"origin": locA, 
     		"destination": locB,
+    		"unitSystem": data.defaults.units,
     		"travelMode": travelType
 		};
 		directionsDisplay.setPanel($(selector + ' .agm_mh_directions_panel').get(0));
@@ -128,6 +129,31 @@ AgmMapHandler = function (selector, data) {
 			else alert(l10nStrings.oops_no_directions); 
 		});
 		return false;
+	};
+	
+	var plotRoutes = function () {
+		var old = false;
+		$.each(_markers, function (idx, mark) {
+			if (!old) {
+				old = mark;
+				return true; // Skip if no previous marker
+			}
+			var request = {
+				"origin": old.getPosition(), 
+	    		"destination": mark.getPosition(),
+	    		"travelMode": google.maps.DirectionsTravelMode.DRIVING
+			};
+			var dd = new google.maps.DirectionsRenderer({
+				"draggable": true
+			});
+			var ds = new google.maps.DirectionsService();
+			dd.setMap(map);
+			ds.route(request, function(result, status) {
+				if (status == google.maps.DirectionsStatus.OK) dd.setDirections(result);
+			});
+			old = mark;
+			
+		});
 	};
 	
 	var addNewMarker = function (title, pos, body, icon) {
@@ -275,6 +301,11 @@ AgmMapHandler = function (selector, data) {
 			var height = (parseInt(data.height) > 0) ? data.height : 200;
 		}
 		width = (width.toString().indexOf('%')) ? width : parseInt(width); // Support percentages
+		try {
+			data.defaults.units = ("units" in data.defaults) ? google.maps.UnitSystem[data.defaults.units] : google.maps.UnitSystem.METRIC;
+		} catch (e) {
+			data.defaults.units = google.maps.UnitSystem.METRIC;
+		}
 
 		data.zoom = parseInt(data.zoom) ? parseInt(data.zoom) : 1;
 		data.map_type = (data.map_type) ? data.map_type : 'ROADMAP';
@@ -346,6 +377,9 @@ AgmMapHandler = function (selector, data) {
 			panoramioImages = new AgmPanoramioHandler(map, $container, data.image_limit, data.image_size);
 			$container.append(panoramioImages.createMarkup());
 		}
+		var plot_routes = false;
+		try { if (data.plot_routes) plot_routes = true; } catch (e) {}
+		if (plot_routes) plotRoutes();
 		
 		// Set alignment
 		switch(data.map_alignment) {

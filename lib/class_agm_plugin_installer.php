@@ -14,6 +14,7 @@ class AgmPluginInstaller {
 		'image_limit' => 10,
 		'map_alignment' => 'left',
 		'zoom' => 1,
+		'units' => 'METRIC',
 	);
 
 	/**

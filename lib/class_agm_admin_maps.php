@@ -26,20 +26,21 @@ class AgmAdminMaps {
 		register_setting('agm_google_maps', 'agm_google_maps');
 		$form = new AgmAdminFormRenderer;
 
-		add_settings_section('agm_google_maps', 'Options', create_function('', ''), 'agm_google_maps_options_page');
-		add_settings_field('agm_google_maps_default_height', 'Default map height', array($form, create_height_box), 'agm_google_maps_options_page', 'agm_google_maps');
-		add_settings_field('agm_google_maps_default_width', 'Default map width', array($form, create_width_box), 'agm_google_maps_options_page', 'agm_google_maps');
-		add_settings_field('agm_google_maps_default_map_type', 'Default map type', array($form, create_map_type_box), 'agm_google_maps_options_page', 'agm_google_maps');
-		add_settings_field('agm_google_maps_default_map_zoom', 'Default map zoom', array($form, create_map_zoom_box), 'agm_google_maps_options_page', 'agm_google_maps');
-		add_settings_field('agm_google_maps_default_image_size', 'Default image size', array($form, create_image_size_box), 'agm_google_maps_options_page', 'agm_google_maps');
-		add_settings_field('agm_google_maps_default_image_limit', 'Default image limit', array($form, create_image_limit_box), 'agm_google_maps_options_page', 'agm_google_maps');
-		add_settings_field('agm_google_maps_default_map_alignment', 'Default map alignment', array($form, create_alignment_box), 'agm_google_maps_options_page', 'agm_google_maps');
-		add_settings_field('agm_google_maps_custom_css', 'Additional CSS', array($form, create_custom_css_box), 'agm_google_maps_options_page', 'agm_google_maps');
+		add_settings_section('agm_google_maps', __('Options', 'agm_google_maps'), create_function('', ''), 'agm_google_maps_options_page');
+		add_settings_field('agm_google_maps_default_height', __('Default map height', 'agm_google_maps'), array($form, 'create_height_box'), 'agm_google_maps_options_page', 'agm_google_maps');
+		add_settings_field('agm_google_maps_default_width', __('Default map width', 'agm_google_maps'), array($form, 'create_width_box'), 'agm_google_maps_options_page', 'agm_google_maps');
+		add_settings_field('agm_google_maps_default_map_type', __('Default map type', 'agm_google_maps'), array($form, 'create_map_type_box'), 'agm_google_maps_options_page', 'agm_google_maps');
+		add_settings_field('agm_google_maps_default_map_zoom', __('Default map zoom', 'agm_google_maps'), array($form, 'create_map_zoom_box'), 'agm_google_maps_options_page', 'agm_google_maps');
+		add_settings_field('agm_google_maps_default_map_units', __('Default map units', 'agm_google_maps'), array($form, 'create_map_units_box'), 'agm_google_maps_options_page', 'agm_google_maps');
+		add_settings_field('agm_google_maps_default_image_size', __('Default image size', 'agm_google_maps'), array($form, 'create_image_size_box'), 'agm_google_maps_options_page', 'agm_google_maps');
+		add_settings_field('agm_google_maps_default_image_limit', __('Default image limit', 'agm_google_maps'), array($form, 'create_image_limit_box'), 'agm_google_maps_options_page', 'agm_google_maps');
+		add_settings_field('agm_google_maps_default_map_alignment', __('Default map alignment', 'agm_google_maps'), array($form, 'create_alignment_box'), 'agm_google_maps_options_page', 'agm_google_maps');
+		add_settings_field('agm_google_maps_custom_css', __('Additional CSS', 'agm_google_maps'), array($form, 'create_custom_css_box'), 'agm_google_maps_options_page', 'agm_google_maps');
 
-		add_settings_section('agm_google_maps_fields', 'Custom fields', create_function('', ''), 'agm_google_maps_options_page');
-		add_settings_field('agm_google_maps_use_custom_fields', 'Use custom Post Meta fields support', array($form, create_use_custom_fields_box), 'agm_google_maps_options_page', 'agm_google_maps_fields');
-		add_settings_field('agm_google_maps_custom_fields_map', 'Map custom fields', array($form, create_custom_fields_map_box), 'agm_google_maps_options_page', 'agm_google_maps_fields');
-		add_settings_field('agm_google_maps_custom_fields_options', 'When these fields are found, I want to', array($form, create_custom_fields_options_box), 'agm_google_maps_options_page', 'agm_google_maps_fields');
+		add_settings_section('agm_google_maps_fields', __('Custom fields', 'agm_google_maps'), create_function('', ''), 'agm_google_maps_options_page');
+		add_settings_field('agm_google_maps_use_custom_fields', __('Use custom Post Meta fields support', 'agm_google_maps'), array($form, 'create_use_custom_fields_box'), 'agm_google_maps_options_page', 'agm_google_maps_fields');
+		add_settings_field('agm_google_maps_custom_fields_map', __('Map custom fields', 'agm_google_maps'), array($form, 'create_custom_fields_map_box'), 'agm_google_maps_options_page', 'agm_google_maps_fields');
+		add_settings_field('agm_google_maps_custom_fields_options', __('When these fields are found, I want to', 'agm_google_maps'), array($form, 'create_custom_fields_options_box'), 'agm_google_maps_options_page', 'agm_google_maps_fields');
 	}
 
 	/**
@@ -335,7 +336,7 @@ class AgmAdminMaps {
 
 		// Register post saving handlers
 		$opts = get_option('agm_google_maps');
-		if ($opts['use_custom_fields']) {
+		if (@$opts['use_custom_fields']) {
 			add_action('post_updated', array($this, 'process_post_meta'), 1); // Note the order
 		}
 

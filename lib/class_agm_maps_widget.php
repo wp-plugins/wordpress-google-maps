@@ -22,6 +22,7 @@ class AgmMapsWidget extends WP_Widget {
 		$show_markers = esc_attr($instance['show_markers']);
 		$show_images = esc_attr($instance['show_images']);
 		$show_posts = esc_attr($instance['show_posts']);
+		$zoom = esc_attr($instance['zoom']);
 
 		// Set defaults
 		$height = $height ? $height : 200;
@@ -33,6 +34,15 @@ class AgmMapsWidget extends WP_Widget {
 		$show_markers = (isset($instance['show_markers'])) ? $show_markers : 1;
 		$show_images = $show_images ? $show_images : 0;
 		$show_posts = $show_posts ? $show_posts : 1;
+
+		$zoom_items = array(
+			'1' => 'Earth',
+			'3' => 'Continent',
+			'5' => 'Region',
+			'7' => 'Nearby Cities',
+			'12' => 'City Plan',
+			'15' => 'Details',
+		);
 
 		// Load map titles/ids
 		$maps = $this->model->get_maps();
@@ -54,6 +64,7 @@ class AgmMapsWidget extends WP_Widget {
 		$instance['show_markers'] = (int)$new_instance['show_markers'];
 		$instance['show_images'] = (int)$new_instance['show_images'];
 		$instance['show_posts'] = (int)$new_instance['show_posts'];
+		$instance['zoom'] = (int)$new_instance['zoom'];
 		return $instance;
 	}
 
@@ -73,6 +84,7 @@ class AgmMapsWidget extends WP_Widget {
 		$show_markers = $instance['show_markers'];
 		$show_images = $instance['show_images'];
 		$show_posts = $instance['show_posts'];
+		$zoom = (int)$instance['zoom'];
 
 		$maps = $this->get_maps($query, $query_custom, $map_id, $show_as_one, $network);
 
@@ -86,6 +98,7 @@ class AgmMapsWidget extends WP_Widget {
 			$map['show_map'] = $show_map;
 			$map['show_markers'] = $show_markers;
 			$map['show_images'] = $show_images;
+			if ($zoom) $map['zoom'] = $zoom;
 			echo '<div id="' . $selector . '"></div>';
 			echo '<script type="text/javascript">_agmMaps[_agmMaps.length] = {selector: "#' . $selector . '", data: ' . json_encode($map) . '};</script>';
 		}

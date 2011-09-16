@@ -130,7 +130,7 @@ class AgmUserMaps {
 
 		// Step2: Register custom fields processing
 		$opts = get_option('agm_google_maps');
-		if ($opts['use_custom_fields']) {
+		if (@$opts['use_custom_fields']) {
 			add_filter('the_content', array($this, 'process_post_meta'), 1); // Note the order
 		}
 

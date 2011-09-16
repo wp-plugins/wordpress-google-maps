@@ -118,19 +118,32 @@ class AgmMarkerReplacer {
 		// Appearance overrides
 			'height' => false,
 			'width' => false,
+			'zoom' => false,
 			'show_map' => false,
 			'show_markers' => false,
 			'show_images' => false,
 			'show_posts' => false,
+			'map_type' => false,
+		// Command switches
+			'plot_routes' => false,
 		), $atts);
 
 		$overrides = array();
+		$map_types = array(
+			'ROADMAP',
+			'SATELLITE',
+			'HYBRID',
+			'TERRAIN'
+		);
 		if ($atts['height']) $overrides['height'] = $atts['height'];
 		if ($atts['width']) $overrides['width'] = $atts['width'];
+		if ($atts['zoom']) $overrides['zoom'] = $atts['zoom'];
 		if ($atts['show_map']) $overrides['show_map'] = ('true' == $atts['show_map']) ? 1 : 0;
 		if ($atts['show_markers']) $overrides['show_markers'] = ('true' == $atts['show_markers']) ? 1 : 0;
 		if ($atts['show_images']) $overrides['show_images'] = ('true' == $atts['show_images']) ? 1 : 0;
 		if ($atts['show_posts']) $overrides['show_posts'] = ('true' == $atts['show_posts']) ? 1 : 0;
+		if ($atts['plot_routes']) $overrides['plot_routes'] = ('true' == $atts['plot_routes']) ? 1 : 0;
+		if ($atts['map_type'] && in_array(strtoupper($atts['map_type']), $map_types)) $overrides['map_type'] = strtoupper($atts['map_type']);
 
 		if (!AGM_USE_POST_INDEXER) $atts['network'] = false; // Can't do this without Post Indexer
 		if ($atts['id']) $body = $this->process_map_id_tag($atts['id'], $overrides); // Single map, no overlay

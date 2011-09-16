@@ -3,7 +3,7 @@ Contributors: WPMUDEV
 Tags: api, buddypress, google, google maps, gps, lat, latitude, lon, longitude, map, mapper, mapping, maps, marker, mash, mashup, poi, simple, simplemap, v3, WPMU DEV, multisite mapping
 Requires at least: 3.1
 Tested up to: 3.2
-Stable tag: 2.0.2
+Stable tag: 2.1
 
 Easily embed and customize Google maps on your WordPress site - in posts, pages or as an easy to use widget.
 

@@ -195,26 +195,33 @@ class AgmMapModel {
 	function get_post_titles ($ids) {
 		if (!is_array($ids)) return false;
 		$blog_id = false;
+		$posts = array();
+		$blogs_to_posts = array();
+
 		foreach ($ids as $k=>$v) {
 			if (strpos($v, "|")) {
 				list($blog_id, $v) = explode('|', $v);
 				$blog_id = (int)$blog_id;
 			}
-			$ids[$k] = (int)$v;
+			$blogs_to_posts[$blog_id] = is_array($blogs_to_posts[$blog_id]) ? array_merge($blogs_to_posts[$blog_id], array($v)) : array($v);
 		}
-		if ($blog_id) {
-			switch_to_blog($blog_id);
-		}
-		$table = $this->wpdb->prefix . 'posts';
-		$ids_string = join(', ', $ids);
-		$posts = $this->wpdb->get_results("SELECT id, post_title FROM {$table} WHERE ID IN ({$ids_string})", ARRAY_A);
 
+		foreach ($blogs_to_posts as $blog_id => $ids) {
+			if ($blog_id) {
+				switch_to_blog($blog_id);
+			}
+			$table = $this->wpdb->prefix . 'posts';
+			$ids_string = join(', ', $ids);
+			$result = $this->wpdb->get_results("SELECT id, post_title FROM {$table} WHERE ID IN ({$ids_string})", ARRAY_A);
+			foreach ($result as $rid => $post) {
+				$post['permalink'] = get_permalink($post['id']);
+				$posts[] = $post;
+			}
+			if ($blog_id) {
+				restore_current_blog();
+			}
+		}
 		if (!$posts) return false;
-
-		foreach ($posts as $pid=>$post) {
-			$posts[$pid]['permalink'] = get_permalink($post['id']);
-		}
-
 		return $posts;
 	}
 
@@ -424,10 +431,11 @@ class AgmMapModel {
 			$map['markers'] = is_array($map['markers']) ? $map['markers'] : array();
 			$markers = array_merge($markers, $map['markers']);
 		}
-		$markers = agm_array_multi_unique($markers);
+		//$markers = agm_array_multi_unique($markers);
 
 		// Merge in all the post ids too.
 		// This is for widget show_posts option.
+		$new_markers = $markers;
 		foreach ($maps as $map) {
 			if (isset($map['blog_id']) && is_array($map['post_ids'])) {
 				foreach ($map['post_ids'] as $key=>$val) {
@@ -437,9 +445,13 @@ class AgmMapModel {
 			foreach ($markers as $mid=>$marker) {
 				$post_ids = isset($marker['post_ids']) ? $marker['post_ids'] : array();
 				$map['markers'] = is_array($map['markers']) ? $map['markers'] : array();
-				if (in_array($marker, $map['markers'])) $markers[$mid]['post_ids'] = array_merge($post_ids, $map['post_ids']);
+				if (in_array($marker, $map['markers'])) {
+					$post_ids = array_merge($post_ids, $map['post_ids']);
+					$new_markers[$mid]['post_ids'] = is_array($new_markers[$mid]['post_ids']) ? array_merge($new_markers[$mid]['post_ids'], $post_ids) : $post_ids;
+				}
 			}
 		}
+		$markers = agm_array_multi_unique($new_markers);
 
 		return array(
 			'id' => md5(rand(). microtime()),
@@ -448,6 +460,7 @@ class AgmMapModel {
 			'show_map' => 1,
 			'show_markers' => 1,
 			'show_images' => 1,
+			'zoom' => $defaults['zoom'],
 		);
 	}
 

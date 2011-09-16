@@ -56,8 +56,13 @@
 <p>
 	<label><?php _e('Show:', 'agm_google_maps'); ?></label>
 	<br />
-	<input id="<?php echo $this->get_field_id('show_as_one'); ?>" name="<?php echo $this->get_field_name('show_as_one'); ?>" <?php echo (($show_as_one) ? 'checked="checked"' : ''); ?> type="checkbox" value="1" />
+	<input class="show_as_one" id="<?php echo $this->get_field_id('show_as_one'); ?>" name="<?php echo $this->get_field_name('show_as_one'); ?>" <?php echo (($show_as_one) ? 'checked="checked"' : ''); ?> type="checkbox" value="1" />
 		<label for="<?php echo $this->get_field_id('show_as_one'); ?>"><?php _e('Show as one map', 'agm_google_maps'); ?></label>
+		<select class="wdg_zoom" name="<?php echo $this->get_field_name('zoom'); ?>">
+		<?php foreach ($zoom_items as $zidx => $zlbl) { ?>
+			<option value="<?php echo $zidx?>" <?php echo (($zidx == $zoom) ? 'selected="selected"' : '');?>><?php echo $zlbl;?></option>
+		<?php } ?>
+		</select>
 	<br />
 	<input id="<?php echo $this->get_field_id('show_map'); ?>" name="<?php echo $this->get_field_name('show_map'); ?>" <?php echo (($show_map) ? 'checked="checked"' : ''); ?> type="checkbox" value="1" />
 		<label for="<?php echo $this->get_field_id('show_map'); ?>"><?php _e('Show map', 'agm_google_maps'); ?></label>
@@ -103,6 +108,16 @@ function toggleTargets (e) {
 	}
 }
 
+function toggleZoom (e) {
+	var $me = $(this);
+	var $parent = $me.parent('p');
+	if ($me.is(":checked")) {
+		$parent.find(".wdg_zoom").show().attr('disabled', false);
+	} else {
+		$parent.find(".wdg_zoom").hide().attr('disabled', true).val('');
+	}
+}
+
 function init () {
 	$('p.agm_widget_query_options input:radio').live('click', toggleTargets);
 	$('p.agm_widget_query_options select.map_id_target').each(function() {
@@ -111,6 +126,7 @@ function init () {
 	$('p.agm_widget_query_options input.custom_target').each(function() {
 		if (!$(this).val()) $(this).attr('disabled', true);
 	});
+	$('input.show_as_one').live('change', toggleZoom);
 	_agmBound = true;
 }
 
