@@ -127,6 +127,11 @@ function init () {
 		if (!$(this).val()) $(this).attr('disabled', true);
 	});
 	$('input.show_as_one').live('change', toggleZoom);
+	$('input.show_as_one').each(function () {
+		var $me = $(this);
+		if ($me.is(":checked")) $me.parent("p").find(".wdg_zoom").show().attr('disabled', false);
+		else $me.parent("p").find(".wdg_zoom").hide().attr('disabled', true).val('');
+	});
 	_agmBound = true;
 }
 
