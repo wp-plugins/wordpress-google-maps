@@ -40,14 +40,14 @@ function createNewMap () {
 //Create the needed editor container HTML
 $('body').append(
 	'<div id="map_container" style="display:none">' + 
-	(_agm_is_multisite ? '' : '<p class="agm_less_important">For more detailed instructions on how to use refer to <a target="_blank" href="http://premium.wpmudev.org/project/wordpress-google-maps-plugin/installation/">WPMU DEV Maps Installation and Use instructions</a>.</p>') +
+	(_agm_is_multisite ? '' : '<p class="agm_less_important">For more detailed instructions on how to use refer to <a target="_blank" href="http://premium.wpmudev.org/project/wordpress-google-maps-plugin/installation/">Google Maps Installation and Use instructions</a>.</p>') +
 		'<div class="agm_container" id="maps_new">' +
 			'<h3>' + l10nEditor.new_map + '</h3>' +
 		'</div>' +
 		'<div id="map_preview_container"><div id="map_preview"></div></div>' +
 	'</div>' +
 	'<div id="map_upgrade_notice" style="display:none">' +
-		'<div class="error below-h2"><p><a title="Upgrade Now" href="http://premium.wpmudev.org/project/wordpress-google-maps-plugin">Upgrade to WPMU DEV Maps Pro to enable additional features</a></p></div>' +
+		'<div class="error below-h2"><p><a title="Upgrade Now" href="http://premium.wpmudev.org/project/wordpress-google-maps-plugin">Upgrade to Google Maps Pro to enable additional features</a></p></div>' +
 		l10nEditor.please_upgrade + 
 	'</div>'
 );

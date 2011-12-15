@@ -1,5 +1,14 @@
 @CHARSET "UTF-8";
 
+.agm_google_maps img {
+	background: none repeat scroll 0 0 transparent !important;
+	border: medium none !important;
+	max-width: none !important;
+	max-height: none !important;
+	padding: 0 !important;
+	margin: 0 !important;	
+}
+
 .agm_mh_container ul.agm_mh_marker_list {
 	margin: 0 !important;
 	padding: 0 !important;

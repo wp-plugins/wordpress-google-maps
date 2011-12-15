@@ -47,7 +47,7 @@ class AgmMarkerReplacer {
 		$map = array_merge($map, $overrides);
 
 		$elid = 'map-' . md5(microtime() . rand());
-		$rpl = '<div id="' . $elid . '"></div>';
+		$rpl = '<div class="agm_google_maps" id="' . $elid . '"></div>';
 		$rpl .= '<script type="text/javascript">_agmMaps[_agmMaps.length] = {selector: "#' . $elid . '", data: ' . json_encode($map) . '};</script>';
 		return $rpl;
 	}

@@ -85,7 +85,14 @@ class AgmPluginInstaller {
 			markers TEXT NOT NULL,
 			options TEXT NOT NULL,
 			UNIQUE KEY id (id)
-		);";
+		)";
+		// Setup charset and collation
+		if (!empty($this->wpdb->charset)) {
+			$sql .= " DEFAULT CHARACTER SET {$this->wpdb->charset}";
+		}
+		if (!empty($this->wpdb->collate)) {
+			$sql .= " COLLATE {$this->wpdb->collate}";
+		}
 		require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 		dbDelta($sql);
 	}

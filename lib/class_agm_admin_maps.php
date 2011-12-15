@@ -41,13 +41,18 @@ class AgmAdminMaps {
 		add_settings_field('agm_google_maps_use_custom_fields', __('Use custom Post Meta fields support', 'agm_google_maps'), array($form, 'create_use_custom_fields_box'), 'agm_google_maps_options_page', 'agm_google_maps_fields');
 		add_settings_field('agm_google_maps_custom_fields_map', __('Map custom fields', 'agm_google_maps'), array($form, 'create_custom_fields_map_box'), 'agm_google_maps_options_page', 'agm_google_maps_fields');
 		add_settings_field('agm_google_maps_custom_fields_options', __('When these fields are found, I want to', 'agm_google_maps'), array($form, 'create_custom_fields_options_box'), 'agm_google_maps_options_page', 'agm_google_maps_fields');
+		
+		if ((!is_multisite() && current_user_can('manage_options')) || (is_multisite() && current_user_can('manage_network_options'))) { // On multisite, plugins are available only to network admins
+			add_settings_section('agm_google_maps_plugins', __('Google Maps Add-ons', 'agm_google_maps'), create_function('', ''), 'agm_google_maps_options_page');
+			add_settings_field('agm_google_maps_all_plugins', __('All Add-ons', 'agm_google_maps'), array($form, 'create_plugins_box'), 'agm_google_maps_options_page', 'agm_google_maps_plugins');
+		}
 	}
 
 	/**
 	 * Creates Admin menu entry.
 	 */
 	function create_admin_menu_entry () {
-		$page = is_multisite() ? __('WPMU DEV Maps' , 'agm_google_maps') : 'WPMU DEV Maps'; // Show branding for singular installs.
+		$page = is_multisite() ? __('Google Maps' , 'agm_google_maps') : 'Google Maps'; // Show branding for singular installs.
 		add_options_page($page, $page, 'manage_options', 'agm_google_maps', array($this, 'create_admin_page'));
 	}
 

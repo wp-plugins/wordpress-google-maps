@@ -167,4 +167,42 @@ class AgmAdminFormRenderer {
 			$select
 		);
 	}
+
+	function create_plugins_box () {
+		$all = AgmPluginsHandler::get_all_plugins();
+		$active = AgmPluginsHandler::get_active_plugins();
+		$sections = array('thead', 'tfoot');
+
+		echo "<table class='widefat'>";
+		foreach ($sections as $section) {
+			echo "<{$section}>";
+			echo '<tr>';
+			echo '<th width="30%">' . __('Add-on name', 'agm_google_maps') . '</th>';
+			echo '<th>' . __('Add-on description', 'agm_google_maps') . '</th>';
+			echo '</tr>';
+			echo "</{$section}>";
+		}
+		echo "<tbody>";
+		foreach ($all as $plugin) {
+			$plugin_data = AgmPluginsHandler::get_plugin_info($plugin);
+			if (!@$plugin_data['Name']) continue; // Require the name
+			$is_active = in_array($plugin, $active);
+			echo "<tr>";
+			echo "<td width='30%'>";
+			echo '<b>' . $plugin_data['Name'] . '</b>';
+			echo "<br />";
+			echo '<a style="color:#CC0000;" title="Upgrade Now" href="http://premium.wpmudev.org/project/wordpress-google-maps-plugin">Upgrade to Google Maps Pro to enable add-ons</a></p>';
+			echo "</td>";
+			echo '<td>' .
+				$plugin_data['Description'] .
+				'<br />' .
+				sprintf(__('Version %s', 'agm_google_maps'), $plugin_data['Version']) .
+				'&nbsp;|&nbsp;' .
+				sprintf(__('by %s', 'agm_google_maps'), '<a href="' . $plugin_data['Plugin URI'] . '">' . $plugin_data['Author'] . '</a>') .
+			'</td>';
+			echo "</tr>";
+		}
+		echo "</tbody>";
+		echo "</table>";
+	}
 }

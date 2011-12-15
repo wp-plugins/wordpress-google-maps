@@ -208,7 +208,7 @@ function advancedModeOff () {
 
 
 // Find Media Buttons strip and add the new one
-var mbuttons_container = $('#media-buttons');
+var mbuttons_container = $('#media-buttons').length ? /*3.2*/ $('#media-buttons') : /*3.3*/ $("#wp-content-media-buttons");
 if (!mbuttons_container.length) return;
 
 mbuttons_container.append('' + 
@@ -220,7 +220,7 @@ mbuttons_container.append('' +
 // Create the needed editor container HTML
 $('body').append(
 	'<div id="map_container" style="display:none">' + 
-	(_agm_is_multisite ? '' : '<p class="agm_less_important">For more detailed instructions on how to use refer to <a target="_blank" href="http://premium.wpmudev.org/project/wordpress-google-maps-plugin/installation/">WPMU DEV Maps Installation and Use instructions</a>.</p>') +
+	(_agm_is_multisite ? '' : '<p class="agm_less_important">For more detailed instructions on how to use refer to <a target="_blank" href="http://premium.wpmudev.org/project/wordpress-google-maps-plugin/installation/">Google Maps Installation and Use instructions</a>.</p>') +
 		'<a href="#" id="maps_existing_switch">' + l10nEditor.existing_map + '</a>' +
 		'<div id="maps_new_switch_container">' +
 			'<p><input type="button" class="button-secondary action" id="maps_new_switch" value="' + l10nEditor.new_map + '" /></p>' +
@@ -238,7 +238,7 @@ $('body').append(
 		'<div id="map_preview_container"><div id="map_preview"></div></div>' +
 	'</div>' +
 	'<div id="map_upgrade_notice" style="display:none">' +
-		'<div class="error below-h2"><p><a title="Upgrade Now" href="http://premium.wpmudev.org/project/wordpress-google-maps-plugin">Upgrade to WPMU DEV Maps Pro to enable additional features</a></p></div>' +
+		'<div class="error below-h2"><p><a title="Upgrade Now" href="http://premium.wpmudev.org/project/wordpress-google-maps-plugin">Upgrade to Google Maps Pro to enable additional features</a></p></div>' +
 		l10nEditor.please_upgrade + 
 	'</div>'
 );

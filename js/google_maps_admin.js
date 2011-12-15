@@ -180,7 +180,7 @@ AgmMapHandler = function (selector, data, allowInsertion) {
 				'</div>' +
 			'</div>' + 
 			'<div id="agm_mh_options" style="display:none">' +
-			'<div class="error below-h2"><p><a title="Upgrade Now" href="http://premium.wpmudev.org/project/wordpress-google-maps-plugin">Upgrade to WPMU DEV Maps Pro to enable additional features and permanently disable links</a></p></div>' +
+			'<div class="error below-h2"><p><a title="Upgrade Now" href="http://premium.wpmudev.org/project/wordpress-google-maps-plugin">Upgrade to Google Maps Pro to enable additional features and permanently disable links</a></p></div>' +
 				'<div>' +
 					'<input type="checkbox" id="agm_map_size_associate" value="' + $('#post_ID').val() + '" /> <label for="agm_map_size_associate">' + l10nStrings.map_associate + '</label>' +
 					'<div class="agm_less_important">' + l10nStrings.association_help + '</div>' + 
@@ -225,7 +225,7 @@ AgmMapHandler = function (selector, data, allowInsertion) {
 							'<label for="agm_map_alignment_right"><img src="' + _agm_root_url + '/img/system/right.png" />' + l10nStrings.map_alignment_right + '</label><br/>' +
 					'</fieldset></div>' +
 				'</fieldset>' +
-				'<p class="agm_less_important">Global defaults are configured in Settings &gt; WPMU DEV Maps</p>' +
+				'<p class="agm_less_important">Global defaults are configured in Settings &gt; Google Maps</p>' +
 			'</div>' +
 			'<div id="map_preview"></div>'
 		);
