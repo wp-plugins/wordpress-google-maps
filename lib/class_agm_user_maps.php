@@ -23,6 +23,7 @@ class AgmUserMaps {
 	 * Include Google Maps dependencies.
 	 */
 	function js_google_maps_api () {
+		wp_enqueue_script('jquery');
 		wp_enqueue_script('google_maps_api', AGM_PLUGIN_URL . '/js/google_maps_loader.js');
 
 		wp_enqueue_script('agm_google_user_maps', AGM_PLUGIN_URL . '/js/google_maps_user.js', array('jquery'));

@@ -135,6 +135,13 @@ class AgmMarkerReplacer {
 			'HYBRID',
 			'TERRAIN'
 		);
+
+// Stacked queries fix
+$atts['query'] = preg_replace(
+	'/' . preg_quote('&#038;') . '/', '&', 
+	preg_replace('/' . preg_quote('&amp;') . '/', '&', $atts['query'])
+);
+
 		if ($atts['height']) $overrides['height'] = $atts['height'];
 		if ($atts['width']) $overrides['width'] = $atts['width'];
 		if ($atts['zoom']) $overrides['zoom'] = $atts['zoom'];

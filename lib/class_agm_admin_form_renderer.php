@@ -123,6 +123,15 @@ class AgmAdminFormRenderer {
 		'';
 	}
 
+	function create_snapping_box () {
+		$opt = apply_filters('agm_google_maps-options', get_option('agm_google_maps'));
+		$use = isset($opt['snapping']) ? $opt['snapping'] : 1;
+		echo '<input type="radio" name="agm_google_maps[snapping]" id="agm_snapping-yes" value="1" ' . ($use ? 'checked="checked"' : '') . ' /> <label for="agm_snapping-yes">' . __("Yes", 'agm_google_maps') . '</label>' .
+			'&nbsp;' .
+			'<input type="radio" name="agm_google_maps[snapping]" id="agm_snapping-no" value="0" ' . ($use ? '' : 'checked="checked"') . ' /> <label for="agm_snapping-no">' . __("No", 'agm_google_maps') . '</label>' .
+		'';
+	}
+
 	function create_use_custom_fields_box () {
 		$opt = get_option('agm_google_maps');
 		$use = @$opt['use_custom_fields'];

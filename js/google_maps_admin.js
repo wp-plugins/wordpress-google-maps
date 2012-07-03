@@ -37,6 +37,8 @@ AgmMapHandler = function (selector, data, allowInsertion) {
 		data.show_images = ("show_images" in data) ? data.show_images : 0; 
 		data.show_links = ("show_links" in data) ? data.show_links : 1; 
 
+		data.snapping = ("snapping" in data.defaults) ? parseInt(data.defaults.snapping) : 1; 
+
 		data.show_panoramio_overlay = ("show_panoramio_overlay" in data) ? parseInt(data.show_panoramio_overlay) : 0; 
 		data.panoramio_overlay_tag = ("panoramio_overlay_tag" in data) ? data.panoramio_overlay_tag : ''; 
 		
@@ -401,17 +403,19 @@ AgmMapHandler = function (selector, data, allowInsertion) {
 			info.open(map, marker);
 		});
 		marker._agmInfo = info; 
-		google.maps.event.addListener(marker, 'dragend', function() {
-			var geocoder = new google.maps.Geocoder();
-			geocoder.geocode({'latLng': marker.getPosition()}, function (results, status) {
-				if (status == google.maps.GeocoderStatus.OK) {
-					marker.setPosition(results[0].geometry.location);
-					marker.setTitle(results[0].formatted_address);
-					info.setContent(createInfoContent(results[0].formatted_address, '', marker.getIcon(), markerPosition));
-					updateMarkersListDisplay();
-				} else alert(l10nStrings.geocoding_error);
-			});
-		});		
+		if (data.snapping) {
+			google.maps.event.addListener(marker, 'dragend', function() {
+				var geocoder = new google.maps.Geocoder();
+				geocoder.geocode({'latLng': marker.getPosition()}, function (results, status) {
+					if (status == google.maps.GeocoderStatus.OK) {
+						marker.setPosition(results[0].geometry.location);
+						marker.setTitle(results[0].formatted_address);
+						info.setContent(createInfoContent(results[0].formatted_address, '', marker.getIcon(), markerPosition));
+						updateMarkersListDisplay();
+					} else alert(l10nStrings.geocoding_error);
+				});
+			});	
+		}	
 		marker._agmBody = body;
 		_markers[markerPosition] = marker;
 		updateMarkersListDisplay();

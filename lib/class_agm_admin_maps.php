@@ -35,6 +35,7 @@ class AgmAdminMaps {
 		add_settings_field('agm_google_maps_default_image_size', __('Default image size', 'agm_google_maps'), array($form, 'create_image_size_box'), 'agm_google_maps_options_page', 'agm_google_maps');
 		add_settings_field('agm_google_maps_default_image_limit', __('Default image limit', 'agm_google_maps'), array($form, 'create_image_limit_box'), 'agm_google_maps_options_page', 'agm_google_maps');
 		add_settings_field('agm_google_maps_default_map_alignment', __('Default map alignment', 'agm_google_maps'), array($form, 'create_alignment_box'), 'agm_google_maps_options_page', 'agm_google_maps');
+		add_settings_field('agm_google_maps_snapping', __('Snapping', 'agm_google_maps'), array($form, 'create_snapping_box'), 'agm_google_maps_options_page', 'agm_google_maps');
 		add_settings_field('agm_google_maps_custom_css', __('Additional CSS', 'agm_google_maps'), array($form, 'create_custom_css_box'), 'agm_google_maps_options_page', 'agm_google_maps');
 
 		add_settings_section('agm_google_maps_fields', __('Custom fields', 'agm_google_maps'), create_function('', ''), 'agm_google_maps_options_page');
