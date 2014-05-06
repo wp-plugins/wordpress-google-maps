@@ -2,7 +2,7 @@
 Contributors: WPMUDEV
 Tags: api, buddypress, google, google maps, gps, lat, latitude, lon, longitude, map, mapper, mapping, maps, marker, mash, mashup, poi, simple, simplemap, v3, WPMU DEV, multisite mapping
 Requires at least: 3.1
-Tested up to: 3.6.1
+Tested up to: 3.9.1
 Stable tag: 2.5.4
 
 Easily embed and customize Google maps on your WordPress site - in posts, pages or as an easy to use widget.
@@ -10,6 +10,8 @@ Easily embed and customize Google maps on your WordPress site - in posts, pages 
 == Description ==
 
 Google Maps is the internet standard for mapping and direction.  And why not?  Their latest APIs make for the easiest, most streamlined experience available.  This plugin does all the work for you.  No creating an account.  No copying of links from Google's site.  No need to go to Google maps at all.
+
+[youtube https://www.youtube.com/watch?v=pn-NGM2PvtE]
 
 This plugin does it all, providing a solution for the everyday blogger, the ma and pa business owner, and even the most particular of power users!  And it's ready to be used in any environment - WordPress, BuddyPress, and Multisite. It's never been easier than it is now!
 
