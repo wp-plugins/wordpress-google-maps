@@ -1,8 +1,8 @@
 === Google Maps All In One ===
 Contributors: WPMUDEV
-Tags: Address, api, buddypress, BuddyPress, Cities, City, Cluster, Continent, Custom Fields, Directions, Earth, Easy Map, Facebook, Facebook Friends, Geo Tag, GEOTag, google, google maps, Google Places, googlemaps, gps, Grouping, Hybrid,KML,KML Overlay, KML Uploader, lat, latitude, Latitude, lon, longitude, Longitude, map, Map Custom Fields, Map Plugin, mapper, mapping, maps, marker, mash, mashup, multisite mapping, Nearby Facebook Friends, poi, Post Map, Region, Responsive Maps,Road Map, Routes, Satellite, simple, simplemap, Terrain, Traffic Overlay, User Checkins, WPMU DEV
+Tags: Maps, google maps, Geo tag, gps, KML Overlay, KML Uploader, Map Custom Icon, multisite mapping, Responsive Maps,Traffic Overlay, User Checkins,
 Requires at least: 3.1
-Tested up to: 3.9.1
+Tested up to: 4.0
 Stable tag: 2.5.4
 
 Easily embed and customize Google maps on your WordPress site - in posts, pages or as an easy to use widget.
