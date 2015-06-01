@@ -1,19 +1,26 @@
+/*! Google Maps Free - v2.5.4
+ * https://wordpress.org/plugins/wordpress-google-maps/
+ * Copyright (c) 2015; * Licensed GPLv2+ */
+/*global window:false */
+/*global document:false */
+/*global _agm:false */
+
 /**
- * Asynchrounously load Google Maps API. 
+ * Asynchrounously load Google Maps API.
  */
 
 
 /**
  * Global API loaded flag.
  */
-var _agmMapIsLoaded = false;
+window._agmMapIsLoaded = false;
 
 
 /**
- * Callback - triggers loaded flag setting. 
+ * Callback - triggers loaded flag setting.
  */
 function agmInitialize () {
-	_agmMapIsLoaded = true;
+	window._agmMapIsLoaded = true;
 }
 
 /**
